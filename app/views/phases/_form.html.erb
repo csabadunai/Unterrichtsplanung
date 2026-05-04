@@ -11,31 +11,27 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :duration, style: "display: block" %>
-    <%= form.number_field :duration %>
-  </div>
+  <%= form.hidden_field :position %>
+  <div class="row border-top border-bottom">
+    <div class="col-1 border-start border-end">
+      <%= form.number_field :duration, class: "form-control" %>
+      <br>
+      <%= form.text_field :social, class: "form-control" %>
+    </div>
 
-  <div>
-    <%= form.label :social, style: "display: block" %>
-    <%= form.text_field :social %>
-  </div>
+    <div class="col-6 border-start border-end">
+      <%= form.textarea :description, class: "form-control h-100"  %>
+    </div>
 
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.textarea :description %>
-  </div>
+    <div class="col-3 border-start border-end">
+      <%= form.textarea :differentiation, class: "form-control h-100"  %>
+    </div>
 
-  <div>
-    <%= form.label :differentiation, style: "display: block" %>
-    <%= form.textarea :differentiation %>
-  </div>
+    <div class="col-2 border-start border-end">
+      <%= form.text_field :materials, class: "form-control h-100"  %>
+    </div>
 
-  <div>
-    <%= form.label :materials, style: "display: block" %>
-    <%= form.text_field :materials %>
   </div>
-
   <div>
     <%= form.submit %>
   </div>

@@ -6,10 +6,12 @@
 
 <div id="phases">
   <% @phases.each do |phase| %>
+    <%= link_to "Insert Phase Above", new_phase_path(position: phase.position) %>
+    <%= link_to "Move down", move_lower_phase_path(phase), data: { turbo_method: :patch } %>
+    <%= link_to "Move up", move_higher_phase_path(phase), data: { turbo_method: :patch } %>
     <%= render phase %>
-    <p>
-      <%= link_to "Show this phase", phase %>
-    </p>
+    <%= link_to "Show this phase", phase %>
+
   <% end %>
 </div>
 

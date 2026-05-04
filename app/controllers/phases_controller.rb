@@ -1,9 +1,9 @@
 class PhasesController < ApplicationController
-  before_action :set_phase, only: %i[ show edit update destroy ]
+  before_action :set_phase, only: %i[ show edit update destroy move_lower move_higher ]
 
   # GET /phases or /phases.json
   def index
-    @phases = Phase.all
+    @phases = Phase.order(:position)
   end
 
   # GET /phases/1 or /phases/1.json
@@ -13,6 +13,9 @@ class PhasesController < ApplicationController
   # GET /phases/new
   def new
     @phase = Phase.new
+    if params[:position]
+      @phase.position = params[:position]
+    end
   end
 
   # GET /phases/1/edit
@@ -25,11 +28,9 @@ class PhasesController < ApplicationController
 
     respond_to do |format|
       if @phase.save
-        format.html { redirect_to @phase, notice: "Phase was successfully created." }
-        format.json { render :show, status: :created, location: @phase }
+        format.html { redirect_to phases_url, notice: "Phase was successfully created." }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @phase.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -57,14 +58,30 @@ class PhasesController < ApplicationController
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_phase
-      @phase = Phase.find(params.expect(:id))
+  def move_higher
+    if @phase.move_higher
+    else
+      flash[:alert] = "Could not move phase"
     end
+
+    redirect_to phases_path
+  end
+  def move_lower
+    if @phase.move_lower
+    else
+      flash[:alert] = "Could not move phase"
+    end
+
+    redirect_to phases_path
+  end
+  private
+  # Use callbacks to share common setup or constraints between actions.
+  def set_phase
+    @phase = Phase.find(params.expect(:id))
+  end
 
     # Only allow a list of trusted parameters through.
     def phase_params
-      params.expect(phase: [ :duration, :social, :description, :differentiation, :materials ])
+      params.expect(phase: [ :duration, :social, :description, :differentiation, :materials, :position ])
     end
 end
