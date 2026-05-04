@@ -12,10 +12,9 @@ class PhasesController < ApplicationController
 
   # GET /phases/new
   def new
-    @phase = Phase.new(position: params[:position])
-    if params[:position]
-      @phase.position = params[:position]
-    end
+    # If no position is passed, put it at the end of the list
+    new_position = params[:position] || (Phase.maximum(:position).to_i + 1)
+    @phase = Phase.new(position: new_position)
   end
 
   # GET /phases/1/edit
@@ -24,10 +23,23 @@ class PhasesController < ApplicationController
 
   # POST /phases or /phases.json
   def create
-    @phase = Phase.new(phase_params)
+    # Extract the attributes regardless of whether params[:phases] is an Array or Hash
+    bulk_params = params[:phases]
+
+    attributes = if bulk_params.is_a?(Array)
+                   # Case 1: Array (happens on the 'new' page)
+                   bulk_params.first
+                 elsif bulk_params.is_a?(Hash)
+                   # Case 2: Hash (happens if IDs are present)
+                   bulk_params.values.first
+                 end
+
+    # Permit the data if we found it, otherwise fall back to standard phase_params
+    safe_attributes = attributes ? attributes.permit(:duration, :social, :description, :differentiation, :materials, :position) : phase_params
+
+    @phase = Phase.new(safe_attributes)
 
     if @phase.save
-      # Redirect back to index with the editing flag
       redirect_to phases_path(editing: true), notice: "Phase inserted."
     else
       render :new, status: :unprocessable_entity

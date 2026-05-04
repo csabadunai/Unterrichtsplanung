@@ -16,18 +16,13 @@
 
     <% if phase.persisted? %>
       <p>
-      <%# Added turbo_frame: "_top" here %>
-      <%= link_to "Insert Phase Above", 
-      new_phase_path(position: phase.position, editing: true), 
-      data: { turbo_frame: "_top" } %> |
-
-      <%= link_to "Move down", move_lower_phase_path(phase, editing: true), 
-      data: { turbo_method: :patch, turbo_frame: "_top" } %> |
-
-      <%= link_to "Move up", move_higher_phase_path(phase, editing: true), 
-      data: { turbo_method: :patch, turbo_frame: "_top" } %>
+      <%= link_to "Insert Phase Above", new_phase_path(position: phase.position, editing: true), data: { turbo_frame: "_top" } %> |
+      <%= link_to "Move down", move_lower_phase_path(phase, editing: true), data: { turbo_method: :patch, turbo_frame: "_top" } %> |
+      <%= link_to "Move up", move_higher_phase_path(phase, editing: true), data: { turbo_method: :patch, turbo_frame: "_top" } %>
       </p>
-    <% end %>
+    <% else %>
+  <p class="badge bg-info text-dark">New Phase Insertion at Position <%= phase.position %></p>
+<% end %>
 
     <div class="row border-top border-bottom py-2">
       <div class="col-1 border-start border-end">
