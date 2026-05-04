@@ -1,38 +1,65 @@
-<%= form_with(model: phase) do |form| %>
-  <% if phase.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(phase.errors.count, "error") %> prohibited this phase from being saved:</h2>
+<%# app/views/phases/_form.html.erb %>
+<% is_bulk = local_assigns[:bulk] %>
+<% form_id = is_bulk ? "bulk-edit-form" : nil %>
 
-      <ul>
-        <% phase.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+<%# Capture the content so we can wrap it conditionally %>
+<% form_content = capture do %>
+  <%= fields_for "phases[]", phase do |f| %>
+    <% if phase.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(phase.errors.count, "error") %> prohibited this phase from being saved:</h2>
+        <ul><% phase.errors.each { |error| %><li><%= error.full_message %></li><% } %></ul>
+      </div>
+    <% end %>
+
+    <%= f.hidden_field :position, form: form_id %>
+
+    <% if phase.persisted? %>
+      <p>
+      <%# Added turbo_frame: "_top" here %>
+      <%= link_to "Insert Phase Above", 
+      new_phase_path(position: phase.position, editing: true), 
+      data: { turbo_frame: "_top" } %> |
+
+      <%= link_to "Move down", move_lower_phase_path(phase, editing: true), 
+      data: { turbo_method: :patch, turbo_frame: "_top" } %> |
+
+      <%= link_to "Move up", move_higher_phase_path(phase, editing: true), 
+      data: { turbo_method: :patch, turbo_frame: "_top" } %>
+      </p>
+    <% end %>
+
+    <div class="row border-top border-bottom py-2">
+      <div class="col-1 border-start border-end">
+        <%= f.number_field :duration, class: "form-control", form: form_id %>
+        <br>
+        <%= f.text_field :social, class: "form-control", form: form_id %>
+      </div>
+
+      <div class="col-6 border-start border-end">
+        <%= f.text_area :description, class: "form-control h-100", form: form_id %>
+      </div>
+
+      <div class="col-3 border-start border-end">
+        <%= f.text_area :differentiation, class: "form-control h-100", form: form_id %>
+      </div>
+
+      <div class="col-2 border-start border-end">
+        <%= f.text_field :materials, class: "form-control h-100", form: form_id %>
+      </div>
     </div>
+
+    <% unless is_bulk %>
+      <div class="mt-2">
+        <%= f.submit "Update Phase", class: "btn btn-primary" %>
+      </div>
+    <% end %>
   <% end %>
+<% end %>
 
-  <%= form.hidden_field :position %>
-  <div class="row border-top border-bottom">
-    <div class="col-1 border-start border-end">
-      <%= form.number_field :duration, class: "form-control" %>
-      <br>
-      <%= form.text_field :social, class: "form-control" %>
-    </div>
-
-    <div class="col-6 border-start border-end">
-      <%= form.textarea :description, class: "form-control h-100"  %>
-    </div>
-
-    <div class="col-3 border-start border-end">
-      <%= form.textarea :differentiation, class: "form-control h-100"  %>
-    </div>
-
-    <div class="col-2 border-start border-end">
-      <%= form.text_field :materials, class: "form-control h-100"  %>
-    </div>
-
-  </div>
-  <div>
-    <%= form.submit %>
-  </div>
+<%# The decision: wrap in a form tag or just spit out the fields %>
+<% if is_bulk %>
+  <%= form_content %>
+<% else %>
+  <%= form_with(model: phase) { form_content } %>
 <% end %>

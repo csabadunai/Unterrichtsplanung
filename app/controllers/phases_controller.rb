@@ -12,7 +12,7 @@ class PhasesController < ApplicationController
 
   # GET /phases/new
   def new
-    @phase = Phase.new
+    @phase = Phase.new(position: params[:position])
     if params[:position]
       @phase.position = params[:position]
     end
@@ -26,12 +26,11 @@ class PhasesController < ApplicationController
   def create
     @phase = Phase.new(phase_params)
 
-    respond_to do |format|
-      if @phase.save
-        format.html { redirect_to phases_url, notice: "Phase was successfully created." }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-      end
+    if @phase.save
+      # Redirect back to index with the editing flag
+      redirect_to phases_path(editing: true), notice: "Phase inserted."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -39,11 +38,10 @@ class PhasesController < ApplicationController
   def update
     respond_to do |format|
       if @phase.update(phase_params)
-        format.html { redirect_to @phase, notice: "Phase was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @phase }
+        # Redirect to index instead of show, keeping the edit mode if it was active
+        format.html { redirect_to phases_path(editing: params[:editing]), notice: "Phase was successfully updated." }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @phase.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -58,22 +56,36 @@ class PhasesController < ApplicationController
     end
   end
 
+  def bulk_update
+    params[:phases].each do |id, attributes|
+      phase = Phase.find(id)
+      safe_attributes = attributes.permit(:duration, :social, :description, :differentiation, :materials, :position)
+      phase.update(safe_attributes)
+    end
+
+    # Redirect back to the clean index (Display Mode)
+    redirect_to phases_path, notice: "All phases updated successfully."
+  end
+
   def move_higher
     if @phase.move_higher
     else
       flash[:alert] = "Could not move phase"
     end
 
-    redirect_to phases_path
+    redirect_to phases_path(editing: params[:editing])
   end
+
   def move_lower
     if @phase.move_lower
     else
       flash[:alert] = "Could not move phase"
     end
 
-    redirect_to phases_path
+    redirect_to phases_path(editing: params[:editing])
   end
+
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_phase

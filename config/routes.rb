@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   resources :phases do
+    collection do
+      patch :bulk_update
+    end
     member do
       patch :move_lower
       patch :move_higher

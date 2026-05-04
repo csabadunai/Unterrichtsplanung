@@ -2,7 +2,9 @@
 
 <h1>Editing phase</h1>
 
-<%= render "form", phase: @phase %>
+<%= turbo_frame_tag dom_id(@phase) do %>
+  <%= render "form", phase: @phase %>
+<% end %>
 
 <br>
 
