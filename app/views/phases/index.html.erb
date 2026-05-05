@@ -4,12 +4,12 @@
 <div class="header-actions mb-3">
   <% if params[:editing] %>
     <%# The "Ghost Form" anchor %>
-    <%= form_with url: bulk_update_phases_path, method: :patch, id: "bulk-edit-form" do %><% end %>
+    <%= form_with url: bulk_update_lesson_phases_path(@lesson), method: :patch, id: "bulk-edit-form" do %><% end %>
     
     <button type="submit" form="bulk-edit-form" class="btn btn-success">Save All Phases</button>
-    <%= link_to "Cancel Editing", phases_path, class: "btn btn-secondary" %>
+    <%= link_to "Cancel Editing", lesson_phases_path(@lesson), class: "btn btn-secondary" %>
   <% else %>
-    <%= link_to "Edit All Phases", phases_path(editing: true), class: "btn btn-primary" %>
+    <%= link_to "Edit All Phases", lesson_phases_path(@lesson, editing: true), class: "btn btn-primary" %>
   <% end %>
 </div>
 
@@ -29,4 +29,4 @@
   <% end %>
 </div>
 
-<%= link_to "New phase", new_phase_path %>
+<%= link_to "New phase", new_lesson_phase_path(@lesson) %>

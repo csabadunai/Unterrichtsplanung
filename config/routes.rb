@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
-  resources :phases do
-    collection do
-      patch :bulk_update
-    end
-    member do
-      patch :move_lower
-      patch :move_higher
+  resources :lessons do
+    resources :phases do
+      collection do
+        patch :bulk_update
+      end
+      member do
+        patch :move_lower
+        patch :move_higher
+      end
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -19,5 +21,5 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root "phases#index"
+  root "lessons#index"
 end

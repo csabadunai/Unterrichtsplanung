@@ -10,15 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_04_071705) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_05_072251) do
+  create_table "lessons", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "duration", default: 1
+    t.datetime "start_time"
+    t.string "title"
+    t.datetime "updated_at", null: false
+  end
+
   create_table "phases", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "description"
     t.text "differentiation"
     t.integer "duration"
+    t.integer "lesson_id", null: false
     t.string "materials"
     t.integer "position"
     t.string "social"
     t.datetime "updated_at", null: false
+    t.index ["lesson_id"], name: "index_phases_on_lesson_id"
   end
+
+  add_foreign_key "phases", "lessons"
 end

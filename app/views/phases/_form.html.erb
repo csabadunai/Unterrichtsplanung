@@ -16,9 +16,9 @@
 
     <% if phase.persisted? %>
       <p>
-      <%= link_to '<i class="bi bi-plus-square"></i>'.html_safe, new_phase_path(position: phase.position, editing: true), data: { turbo_frame: "_top" } %> |
-      <%= link_to '<i class="bi bi-arrow-down"></i>'.html_safe, move_lower_phase_path(phase, editing: true), data: { turbo_method: :patch, turbo_frame: "_top" } %> |
-      <%= link_to '<i class="bi bi-arrow-up"></i>'.html_safe, move_higher_phase_path(phase, editing: true), data: { turbo_method: :patch, turbo_frame: "_top" } %>
+      <%= link_to '<i class="bi bi-plus-square"></i>'.html_safe, new_lesson_phase_path(@lesson, position: phase.position, editing: true), data: { turbo_frame: "_top" } %> |
+      <%= link_to '<i class="bi bi-arrow-down"></i>'.html_safe, move_lower_lesson_phase_path(@lesson, phase, editing: true), data: { turbo_method: :patch, turbo_frame: "_top" } %> |
+      <%= link_to '<i class="bi bi-arrow-up"></i>'.html_safe, move_higher_lesson_phase_path(@lesson, phase, editing: true), data: { turbo_method: :patch, turbo_frame: "_top" } %>
       </p>
     <% else %>
   <p class="badge bg-info text-dark">New Phase Insertion at Position <%= phase.position %></p>
@@ -56,5 +56,5 @@
 <% if is_bulk %>
   <%= form_content %>
 <% else %>
-  <%= form_with(model: phase) { form_content } %>
+  <%= form_with(model: [@lesson, phase]) { form_content } %>
 <% end %>
