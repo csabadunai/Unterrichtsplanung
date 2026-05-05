@@ -16,13 +16,22 @@
 
     <% if phase.persisted? %>
       <p>
-      <%= link_to '<i class="bi bi-plus-square"></i>'.html_safe, new_lesson_phase_path(@lesson, position: phase.position, editing: true), data: { turbo_frame: "_top" } %> |
-      <%= link_to '<i class="bi bi-arrow-down"></i>'.html_safe, move_lower_lesson_phase_path(@lesson, phase, editing: true), data: { turbo_method: :patch, turbo_frame: "_top" } %> |
-      <%= link_to '<i class="bi bi-arrow-up"></i>'.html_safe, move_higher_lesson_phase_path(@lesson, phase, editing: true), data: { turbo_method: :patch, turbo_frame: "_top" } %>
+      <%= link_to '<i class="btn btn-sm btn-primary bi bi-plus-square"></i>'.html_safe, new_lesson_phase_path(@lesson, position: phase.position, editing: true), data: { turbo_frame: "_top" } %> 
+      <%= link_to '<i class="btn btn-sm btn-primary bi bi-arrow-down"></i>'.html_safe, move_lower_lesson_phase_path(@lesson, phase, editing: true), data: { turbo_method: :patch, turbo_frame: "_top" } %> 
+      <%= link_to '<i class="btn btn-sm btn-primary bi bi-arrow-up"></i>'.html_safe, move_higher_lesson_phase_path(@lesson, phase, editing: true), data: { turbo_method: :patch, turbo_frame: "_top" } %>
+      <%= link_to lesson_phase_path(@lesson, phase, editing: true), 
+        data: { 
+          turbo_method: :delete, 
+          turbo_confirm: "Are you sure?", 
+          turbo_frame: "_top" 
+        }, 
+        class: "text-danger" do %>
+        <i class="btn btn-sm btn-danger bi bi-trash"></i>
+      <% end %>
       </p>
     <% else %>
-  <p class="badge bg-info text-dark">New Phase Insertion at Position <%= phase.position %></p>
-<% end %>
+      <p class="badge bg-info text-dark">New Phase Insertion at Position <%= phase.position %></p>
+    <% end %>
 
     <div class="row border-top border-bottom py-2">
       <div class="col-1 border-start border-end">

@@ -61,6 +61,7 @@ class LessonsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_lesson
       @lesson = Lesson.find(params.expect(:id))
+      @phases = @lesson.phases.order(:position)
     end
 
     # Only allow a list of trusted parameters through.

@@ -1,0 +1,45 @@
+<div class="header-actions mb-3">
+  <% if params[:editing] %>
+    <%= form_with url: bulk_update_lesson_phases_path(@lesson), method: :patch, id: "bulk-edit-form" do %><% end %>
+    <button type="submit" form="bulk-edit-form" class="btn btn-success">Save All Phases</button>
+    <%# Note: link_to @lesson goes to the show page, effectively 'canceling' editing %>
+    <%= link_to "Cancel Editing", lesson_path(@lesson), class: "btn btn-secondary" %>
+  <% else %>
+    <%= link_to "Edit All Phases", lesson_path(@lesson, editing: true), class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<div class="row border-top border-bottom">
+  <div class="col-1 border-start border-end">
+    Dauer &
+    <br>
+    Sozialform
+  </div>
+
+  <div class="col-6 border-start border-end">
+    Ablauf
+  </div>
+
+  <div class="col-3 border-start border-end">
+    Differenzierung
+  </div>
+
+  <div class="col-2 border-start border-end">
+    Material
+  </div>
+
+</div>
+
+<div id="phases">
+  <% @phases.each do |phase| %>
+    <%= turbo_frame_tag dom_id(phase) do %>
+      <% if params[:editing] %>
+        <%= render "phases/form", phase: phase, bulk: true %>
+      <% else %>
+        <%= render phase %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+
+<%= link_to "New phase", new_lesson_phase_path(@lesson), class: "btn btn-outline-primary" %>

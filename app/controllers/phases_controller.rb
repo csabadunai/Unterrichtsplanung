@@ -28,7 +28,7 @@ class PhasesController < ApplicationController
     @phase = @lesson.phases.build(safe_attributes)
 
     if @phase.save
-      redirect_to lesson_phases_path(@lesson, editing: true), notice: "Phase inserted."
+      redirect_to lesson_path(@lesson, editing: true), notice: "Phase inserted."
     else
       render :new, status: :unprocessable_entity
     end
@@ -36,7 +36,7 @@ class PhasesController < ApplicationController
 
   def update
     if @phase.update(phase_params)
-      redirect_to lesson_phases_path(@lesson, editing: params[:editing]), notice: "Phase updated."
+      redirect_to lesson_path(@lesson, editing: params[:editing]), notice: "Phase updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -50,22 +50,30 @@ class PhasesController < ApplicationController
       phase.update(safe_attributes)
     end
 
-    redirect_to lesson_phases_path(@lesson), notice: "All phases updated."
+    redirect_to lesson_path(@lesson), notice: "All phases updated."
   end
 
   def move_higher
     @phase.move_higher
-    redirect_to lesson_phases_path(@lesson, editing: params[:editing])
+    redirect_to lesson_path(@lesson, editing: params[:editing])
   end
 
   def move_lower
     @phase.move_lower
-    redirect_to lesson_phases_path(@lesson, editing: params[:editing])
+    redirect_to lesson_path(@lesson, editing: params[:editing])
   end
 
   def destroy
     @phase.destroy!
-    redirect_to lesson_phases_path(@lesson), status: :see_other
+    respond_to do |format|
+      # We pass params[:editing] into the redirect helper
+      format.html { 
+        redirect_to lesson_path(@lesson, editing: params[:editing]), 
+        notice: "Phase was successfully destroyed.", 
+        status: :see_other 
+      }
+      format.json { head :no_content }
+    end
   end
 
   private
