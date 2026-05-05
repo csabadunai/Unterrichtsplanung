@@ -16,9 +16,9 @@
 
     <% if phase.persisted? %>
       <p>
-      <%= link_to "Insert Phase Above", new_phase_path(position: phase.position, editing: true), data: { turbo_frame: "_top" } %> |
-      <%= link_to "Move down", move_lower_phase_path(phase, editing: true), data: { turbo_method: :patch, turbo_frame: "_top" } %> |
-      <%= link_to "Move up", move_higher_phase_path(phase, editing: true), data: { turbo_method: :patch, turbo_frame: "_top" } %>
+      <%= link_to '<i class="bi bi-plus-square"></i>'.html_safe, new_phase_path(position: phase.position, editing: true), data: { turbo_frame: "_top" } %> |
+      <%= link_to '<i class="bi bi-arrow-down"></i>'.html_safe, move_lower_phase_path(phase, editing: true), data: { turbo_method: :patch, turbo_frame: "_top" } %> |
+      <%= link_to '<i class="bi bi-arrow-up"></i>'.html_safe, move_higher_phase_path(phase, editing: true), data: { turbo_method: :patch, turbo_frame: "_top" } %>
       </p>
     <% else %>
   <p class="badge bg-info text-dark">New Phase Insertion at Position <%= phase.position %></p>
