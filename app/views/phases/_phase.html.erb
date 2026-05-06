@@ -6,11 +6,15 @@
   </div>
 
   <div class="col-6 border-start border-end">
-    <%= phase.description %>
+    <%= sanitize phase.description, 
+      tags: %w(strong em b i p br ul ol li span u), 
+      attributes: %w(style class data-list) %> <%# Added data-list here %>
   </div>
 
   <div class="col-3 border-start border-end">
-    <%= phase.differentiation %>
+    <%= sanitize phase.differentiation,
+      tags: %w(strong em b i p br ul ol li span u), 
+      attributes: %w(style class data-list) %> <%# Added data-list here %>
   </div>
 
   <div class="col-2 border-start border-end">

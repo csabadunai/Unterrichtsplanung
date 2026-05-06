@@ -41,12 +41,51 @@
       </div>
 
       <div class="col-6 border-start border-end">
-        <%= f.text_area :description, class: "form-control h-100", form: form_id %>
+        <%#= f.text_area :description, class: "form-control h-100", form: form_id %>
+        <%= f.hidden_field :description, id: "phase_desc_input_#{phase.id || 'new_' + phase.object_id.to_s}", form: form_id %>
+        <div id="editor_<%= phase.id || 'new' %>" style="height: 150px;">
+          <%= f.object.description.try(:html_safe) %>
+        </div>
+        <script>
+          (function() {
+            // Initialize Quill for this specific phase
+            const quill = new Quill('#editor_<%= phase.id || 'new' %>', {
+              theme: 'snow',
+            });
+
+            const input = document.querySelector('#phase_desc_input_<%= phase.id || 'new' %>');
+
+            // On text change, update the hidden input so Rails saves the HTML
+            quill.on('text-change', function() {
+              input.value = quill.root.innerHTML;
+            });
+          })();
+        </script>
       </div>
 
-      <div class="col-3 border-start border-end">
-        <%= f.text_area :differentiation, class: "form-control h-100", form: form_id %>
-      </div>
+<div class="col-3 border-start border-end">
+  <%= f.hidden_field :differentiation, id: "phase_diff_input_#{phase.id || 'new'}", form: form_id %>
+  
+  <div id="diff_editor_<%= phase.id || 'new' %>">
+    <%= f.object.differentiation.try(:html_safe) %>
+  </div>
+
+  <script>
+    (function() {
+      // 2. Initialize Quill using the diff_editor ID
+      const quill = new Quill('#diff_editor_<%= phase.id || 'new' %>', {
+        theme: 'snow',
+      });
+
+      // 3. Target the diff_input specifically
+      const input = document.querySelector('#phase_diff_input_<%= phase.id || 'new' %>');
+
+      quill.on('text-change', function() {
+        input.value = quill.root.innerHTML;
+      });
+    })();
+  </script>
+</div>
 
       <div class="col-2 border-start border-end">
         <%= f.text_field :materials, class: "form-control h-100", form: form_id %>
