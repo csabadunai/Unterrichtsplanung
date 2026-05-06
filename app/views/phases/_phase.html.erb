@@ -5,13 +5,13 @@
     <%= phase.social %>
   </div>
 
-  <div class="col-6 border-start border-end">
+  <div class="col-6 rich-text-output border-start border-end">
     <%= sanitize phase.description, 
       tags: %w(strong em b i p br ul ol li span u), 
       attributes: %w(style class data-list) %> <%# Added data-list here %>
   </div>
 
-  <div class="col-3 border-start border-end">
+  <div class="col-3 rich-text-output border-start border-end">
     <%= sanitize phase.differentiation,
       tags: %w(strong em b i p br ul ol li span u), 
       attributes: %w(style class data-list) %> <%# Added data-list here %>

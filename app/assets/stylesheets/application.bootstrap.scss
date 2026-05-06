@@ -65,3 +65,39 @@ $input-focus-box-shadow: 0 0 0 $input-focus-width rgba($gruv-orange-bright, 0.25
   box-shadow: none !important; /* Removes the blue/orange glow on click */
   padding: 0.5rem; /* Give it some breathing room */
 }
+
+// Getting Lists bulleted
+/* Ensure the saved content renders Quill-style lists */
+.rich-text-output li[data-list="bullet"] {
+  list-style-type: none;
+  position: relative;
+  left: 10px;
+  padding-left: 1.5em;
+}
+
+.rich-text-output li[data-list="bullet"]::before {
+  content: "\2022"; /* The bullet character */
+  position: relative;
+  left: -5px;
+  font-weight: bold;
+}
+
+.rich-text-output li[data-list="ordered"] {
+  list-style-type: none;
+  counter-increment: ql-counter;
+  position: relative;
+  left: 10px;
+  padding-left: 1.5em;
+}
+
+.rich-text-output li[data-list="ordered"]::before {
+  content: counter(ql-counter) ". ";
+  position: relative;
+  left: -5px;
+}
+
+/* Reset counter for new lists */
+.rich-text-output ol {
+  counter-reset: ql-counter;
+  padding-left: 0;
+}
