@@ -1,3 +1,35 @@
+// 1. The "Warm Gruv" Palette
+$gruv-bg0:      #1d2021; // Darker, warmer background
+$gruv-bg1:      #32302f; // Mid-tone
+$gruv-bg2:      #504945; // Borders
+$gruv-fg:       #fbf1c7; // Higher contrast cream
+
+$gruv-orange-bright: #fe8019;
+$gruv-orange-dim:    #d65d0e;
+$gruv-yellow-bright: #ffff2f;
+$gruv-yellow-dim:    #cb6934;
+$gruv-red:           #fb4934;
+
+// 2. Map for "Orange Dominance"
+$primary:       $gruv-orange-bright; // All main buttons are now Orange
+$info:          $gruv-yellow-bright; // Info badges are now Yellow
+$success:       #b8bb26;             // Keeping green for "Success" only
+$danger:        $gruv-red;
+$warning:       $gruv-yellow-dim;
+
+// 3. Body & Component Redefinition
+$body-bg:       $gruv-bg0;
+$body-color:    $gruv-fg;
+$border-color:  $gruv-bg2;
+
+// Secondary buttons and muted text
+$secondary:     #a89984; 
+
+// Input focus - give it that orange glow
+$input-focus-border-color: $gruv-orange-bright;
+$input-focus-width: 0.25rem;
+$input-focus-box-shadow: 0 0 0 $input-focus-width rgba($gruv-orange-bright, 0.25);
+
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
 
@@ -21,4 +53,15 @@
 /* 3. Ensure the editor doesn't hide behind the fixed toolbar while typing */
 .ql-editor {
   scroll-margin-top: 50px; /* Adjust based on toolbar height */
+}
+.ql-container.ql-snow {
+  border: none !important; /* This removes the inner white borders */
+}
+.ql-snow .ql-container {
+  border: none !important;
+}
+.col-2 textarea.form-control {
+  border: none !important;
+  box-shadow: none !important; /* Removes the blue/orange glow on click */
+  padding: 0.5rem; /* Give it some breathing room */
 }
