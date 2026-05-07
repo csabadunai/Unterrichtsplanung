@@ -19,31 +19,40 @@
       <p class="badge bg-info text-dark">New Phase Insertion at Position <%= phase.position %></p>
     <% end %>
 
-<div class="row border-top border-bottom py-2 align-items-stretch">
+<div class="row g-0 border-top border-bottom py-2 align-items-stretch">
   <%# 1. Duration & Social (1 col) %>
   <div class="col-1 border-start border-end">
     <%= f.number_field :duration, class: "form-control mb-2", placeholder: "min", form: form_id %>
-    <%= f.text_field :social, class: "form-control", placeholder: "Social", form: form_id %>
+    <%= f.select :social, 
+      [['EA', 'EA'], ['PA', 'PA'], ['GA', 'GA']], 
+      { selected: f.object.social || 'EA' }, 
+      { class: "form-select form-select-sm social-picker", 
+        form: form_id } %>
 
-  <div class="btn-group-vertical shadow">
-    <%= link_to new_lesson_phase_path(@lesson, position: phase.position, editing: true), class: "btn btn-sm btn-dark", title: "Insert", data: { turbo_frame: "_top" } do %>
-      <i class="bi bi-plus-lg"></i>
-    <% end %>
+      <% if phase.persisted? %>
+        <div class="btn-group-vertical shadow">
+          <%= link_to new_lesson_phase_path(@lesson, position: phase.position, editing: true), class: "btn btn-sm btn-outline-success", tabindex: "-1", title: "Insert", data: { turbo_frame: "_top" } do %>
+            <i class="bi bi-plus-lg"></i>
+          <% end %>
 
-    <%= link_to lesson_phase_path(@lesson, phase, editing: true), class: "btn btn-sm btn-outline-danger", title: "Delete", data: { turbo_method: :delete, turbo_confirm: "Are you sure?", turbo_frame: "_top" } do %>
-      <i class="bi bi-trash3"></i>
-    <% end %>
-  </div>
+          <%= link_to lesson_phase_path(@lesson, phase, editing: true), class: "btn btn-sm btn-outline-danger", tabindex: "-1", title: "Delete", data: { turbo_method: :delete, turbo_confirm: "Are you sure?", turbo_frame: "_top" } do %>
+            <i class="bi bi-trash3"></i>
+          <% end %>
+        </div>
 
-  <div class="btn-group-vertical shadow">
-    <%= link_to move_higher_lesson_phase_path(@lesson, phase, editing: true), class: "btn btn-sm btn-dark", title: "Up", data: { turbo_method: :patch, turbo_frame: "_top" } do %>
-      <i class="bi bi-chevron-up"></i>
-    <% end %>
+        <div class="btn-group-vertical shadow">
+          <%= link_to move_higher_lesson_phase_path(@lesson, phase, editing: true), class: "btn btn-sm btn-dark", tabindex: "-1", title: "Up", data: { turbo_method: :patch, turbo_frame: "_top" } do %>
+            <i class="bi bi-chevron-up"></i>
+          <% end %>
 
-    <%= link_to move_lower_lesson_phase_path(@lesson, phase, editing: true), class: "btn btn-sm btn-dark", title: "Down", data: { turbo_method: :patch, turbo_frame: "_top" } do %>
-      <i class="bi bi-chevron-down"></i>
-    <% end %>
-  </div>
+          <%= link_to move_lower_lesson_phase_path(@lesson, phase, editing: true), class: "btn btn-sm btn-dark", tabindex: "-1", title: "Down", data: { turbo_method: :patch, turbo_frame: "_top" } do %>
+            <i class="bi bi-chevron-down"></i>
+          <% end %>
+        </div>
+      <% else %>
+        <%# Optional: Show a "New" badge or nothing at all for unsaved phases %>
+        <span class="badge bg-success">Draft</span>
+      <% end %>
   </div>
 
   <%# 2. Description (6 cols) %>
@@ -55,14 +64,36 @@
     </div>
     <script>
       (function() {
-        const quill = new Quill('#<%= desc_id %>_editor', { theme: 'snow' });
+        const quill = new Quill('#<%= desc_id %>_editor', { 
+          theme: 'snow',
+          modules: {
+            keyboard: {
+              bindings: {
+                tab: false,
+                'shift tab': false
+              }
+            }
+          }
+        });
+
+        // --- SILENCE TOOLBAR ---
+        setTimeout(() => {
+          const container = document.getElementById('<%= desc_id %>_editor');
+          const toolbar = container.previousSibling; 
+          if (toolbar && toolbar.classList.contains('ql-toolbar')) {
+            toolbar.querySelectorAll('button, .ql-picker-label').forEach(el => el.setAttribute('tabindex', '-1'));
+          }
+        }, 0);
+
         const input = document.getElementById('<%= desc_id %>_input');
-        quill.on('text-change', function() { input.value = quill.root.innerHTML; });
+        quill.on('text-change', function() {
+          input.value = quill.root.innerHTML;
+        });
       })();
     </script>
   </div>
 
-  <%# 3. Differentiation (2 cols - shrunk from 3 to make room) %>
+  <%# 3. Differentiation (3 cols) %>
   <div class="col-3 border-start border-end">
     <% diff_id = "phase_diff_#{phase.id || "new_#{phase.object_id}"}" %>
     <%= f.hidden_field :differentiation, id: "#{diff_id}_input", form: form_id %>
@@ -71,9 +102,31 @@
     </div>
     <script>
       (function() {
-        const quill = new Quill('#<%= diff_id %>_editor', { theme: 'snow' });
+        const quill = new Quill('#<%= diff_id %>_editor', { 
+          theme: 'snow',
+          modules: {
+            keyboard: {
+              bindings: {
+                tab: false,
+                'shift tab': false
+              }
+            }
+          }
+        });
+
+        // --- SILENCE TOOLBAR ---
+        setTimeout(() => {
+          const container = document.getElementById('<%= diff_id %>_editor');
+          const toolbar = container.previousSibling;
+          if (toolbar && toolbar.classList.contains('ql-toolbar')) {
+            toolbar.querySelectorAll('button, .ql-picker-label').forEach(el => el.setAttribute('tabindex', '-1'));
+          }
+        }, 0);
+
         const input = document.getElementById('<%= diff_id %>_input');
-        quill.on('text-change', function() { input.value = quill.root.innerHTML; });
+        quill.on('text-change', function() {
+          input.value = quill.root.innerHTML;
+        });
       })();
     </script>
   </div>

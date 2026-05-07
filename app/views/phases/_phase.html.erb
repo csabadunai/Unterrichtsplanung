@@ -1,4 +1,4 @@
-<div class="row border-top border-bottom">
+<div class="row g-0 border-top border-bottom">
   <div class="col-1 border-start border-end">
     <%= phase.duration %> <% if phase.duration %> min <% end %>
     <br>
@@ -7,13 +7,13 @@
 
   <div class="col-6 rich-text-output border-start border-end">
     <%= sanitize phase.description, 
-      tags: %w(strong em b i p br ul ol li span u), 
+      tags: %w(strong h1 h2 h3 em b i p br ul ol li span u), 
       attributes: %w(style class data-list) %> <%# Added data-list here %>
   </div>
 
   <div class="col-3 rich-text-output border-start border-end">
     <%= sanitize phase.differentiation,
-      tags: %w(strong em b i p br ul ol li span u), 
+      tags: %w(strong h1 h2 h3 em b i p br ul ol li span u), 
       attributes: %w(style class data-list) %> <%# Added data-list here %>
   </div>
 
