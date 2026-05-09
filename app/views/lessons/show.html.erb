@@ -4,6 +4,26 @@
   <p><strong>Duration:</strong> <%= @lesson.duration %> blocks</p>
 </div>
 
+<div class="card mt-4 border-0 shadow-sm">
+  <div class="card-header bg-light">
+    <h5 class="mb-0" style="font-family: 'Questrial';">Materialliste</h5>
+  </div>
+  <div class="card-body">
+    <% if @lesson.materials_summary.any? %>
+      <ul class="list-group list-group-flush">
+        <% @lesson.materials_summary.each do |item| %>
+          <li class="list-group-item d-flex align-items-center">
+            <i class="bi bi-check2-square me-2 text-primary"></i>
+            <%= item %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted italic">No materials listed for this lesson.</p>
+    <% end %>
+  </div>
+</div>
+
 <hr>
 
 <%# This pulls in everything we just put in the partial %>

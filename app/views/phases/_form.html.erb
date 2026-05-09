@@ -133,7 +133,11 @@
 
   <%# 4. Materials (2 cols) %>
   <div class="col-2 border-start border-end">
-    <%= f.text_area :materials, class: "form-control h-100", form: form_id %>
+    <%= f.text_area :materials, class: "form-control h-100", 
+      placeholder: "Materials (one per line)...", form: form_id %>
+    <div style="font-size: 0.65rem; color: #656d76; margin-top: 4px;">
+      Separate items with Enter
+    </div>
   </div>
 </div>
 
