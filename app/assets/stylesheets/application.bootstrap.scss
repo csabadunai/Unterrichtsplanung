@@ -1,111 +1,139 @@
-// 1. The "Warm Gruv" Palette
-$gruv-bg0:      #1d2021; // Darker, warmer background
-$gruv-bg1:      #32302f; // Mid-tone
-$gruv-bg2:      #504945; // Borders
-$gruv-fg:       #fbf1c7; // Higher contrast cream
+/* --- 1. Core Palette & Variables --- */
+$biz-bg0:           #ffffff; 
+$biz-bg1:           #ffffff; 
+$biz-bg2:           #d0d7de; 
+$biz-fg:            #1f2328; 
 
-$gruv-orange-bright: #fe8019;
-$gruv-orange-dim:    #d65d0e;
-$gruv-yellow-bright: #ffff2f;
-$gruv-yellow-dim:    #cb6934;
-$gruv-red:           #fb4934;
+$biz-blue-bright:   #0969da; 
+$biz-blue-dim:      #0550ae;
+$biz-red:           #cf222e;
 
-// 2. Map for "Orange Dominance"
-$primary:       $gruv-orange-bright; // All main buttons are now Orange
-$info:          $gruv-yellow-bright; // Info badges are now Yellow
-$success:       #b8bb26;             // Keeping green for "Success" only
-$danger:        $gruv-red;
-$warning:       $gruv-yellow-dim;
+/* --- 2. Typography & Bootstrap Overrides --- */
+$font-family-sans-serif: 'Questrial', sans-serif;
 
-// 3. Body & Component Redefinition
-$body-bg:       $gruv-bg0;
-$body-color:    $gruv-fg;
-$border-color:  $gruv-bg2;
+$primary:           $biz-blue-bright; 
+$danger:            $biz-red;
+$secondary:         #656d76; 
+$body-bg:           $biz-bg0;
+$body-color:        $biz-fg;
+$border-color:      $biz-bg2;
 
-// Secondary buttons and muted text
-$secondary:     #a89984; 
-
-// Input focus - give it that orange glow
-$input-focus-border-color: $gruv-orange-bright;
-$input-focus-width: 0.25rem;
-$input-focus-box-shadow: 0 0 0 $input-focus-width rgba($gruv-orange-bright, 0.25);
+$input-focus-width:        0.2rem;
+$input-focus-box-shadow:   0 0 0 $input-focus-width rgba($biz-blue-bright, 0.12);
 
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
 
-/* 1. Hide ALL toolbars by default */
+/* --- 3. Layout & Global Styling --- */
+body {
+  font-family: $font-family-sans-serif;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.01em; // Questrial's signature look
+}
+
+.container {
+  padding-right: 60px !important; 
+}
+
+.row.g-0 {
+  margin: 0;
+  background-color: $biz-bg0;
+}
+
+/* Header Row labels */
+.row.g-0.border-top.border-bottom:first-of-type > div {
+  background-color: $biz-bg1;
+  color: $secondary;
+  font-weight: 400; // Questrial is a single weight, but looks great here
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  padding: 0.6rem 0.5rem;
+}
+
+/* --- 4. Quill & Form Fields --- */
+
 .ql-toolbar.ql-snow {
   display: none !important;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   z-index: 9999;
   background: white;
+  border: none !important;
+  border-bottom: 1px solid $biz-bg2 !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
-/* 2. ONLY show the toolbar for the specific container being focused */
+/* Show toolbar on focus */
 .col-6:focus-within .ql-toolbar.ql-snow,
 .col-3:focus-within .ql-toolbar.ql-snow {
   display: block !important;
 }
 
-/* 3. Ensure the editor doesn't hide behind the fixed toolbar while typing */
+/* Editor Styles - Force Questrial inside the editor */
+.ql-container.ql-snow, .ql-snow .ql-container { border: none !important; }
+
 .ql-editor {
-  scroll-margin-top: 50px; /* Adjust based on toolbar height */
-}
-.ql-container.ql-snow {
-  border: none !important; /* This removes the inner white borders */
-}
-.ql-snow .ql-container {
-  border: none !important;
-}
-.col-2 textarea.form-control {
-  border: none !important;
-  box-shadow: none !important; /* Removes the blue/orange glow on click */
-  padding: 0.5rem; /* Give it some breathing room */
+  text-transform: none !important; 
+  font-family: $font-family-sans-serif !important;
+  font-size: 1.05rem !important; // Questrial reads slightly smaller, so we bump it up
+  line-height: 1.6;
+  scroll-margin-top: 65px;
+  min-height: 100px;
+  color: $biz-fg;
 }
 
-// Getting Lists bulleted
-/* Ensure the saved content renders Quill-style lists */
-.rich-text-output li[data-list="bullet"] {
-  list-style-type: none;
-  position: relative;
-  left: 10px;
-  padding-left: 1.5em;
-}
-
-.rich-text-output li[data-list="bullet"]::before {
-  content: "\2022"; /* The bullet character */
-  position: relative;
-  left: -5px;
-  font-weight: bold;
-}
-
-.rich-text-output li[data-list="ordered"] {
-  list-style-type: none;
-  counter-increment: ql-counter;
-  position: relative;
-  left: 10px;
-  padding-left: 1.5em;
-}
-
-.rich-text-output li[data-list="ordered"]::before {
-  content: counter(ql-counter) ". ";
-  position: relative;
-  left: -5px;
-}
-
-/* Reset counter for new lists */
-.rich-text-output ol {
-  counter-reset: ql-counter;
-  padding-left: 0;
-}
-
-// Get the textareas glowing as well.
+/* Focus States & Glows */
 .quill-editor-instance:focus-within,
 .col-2 textarea.form-control:focus {
-  border: 1px solid #fe8019 !important; /* Thin orange line */
-  box-shadow: 0 0 0 0.25rem rgba(254, 128, 25, 0.25) !important; /* Orange halo */
-  background-color: #32302f !important;
+  background-color: #fff !important;
+  //border-left: 3px solid $biz-blue-bright !important;
+  box-shadow: $input-focus-box-shadow !important;
+  transition: all 0.15s ease-in-out;
+  outline: none;
+}
+
+.col-2 textarea.form-control {
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0.5rem;
+  text-transform: none !important;
+  font-family: $font-family-sans-serif;
+}
+
+/* --- 5. Rich Text Output (Lists) --- */
+.rich-text-output {
+  li[data-list="bullet"] {
+    list-style-type: disc;
+    position: relative;
+    padding-left: 0.5rem;
+    margin-bottom: 0.35rem;
+  }
+
+  li[data-list="ordered"] {
+    position: relative;
+    padding-left: 0.5rem;
+    margin-bottom: 0.35rem;
+  }
+
+  ol {
+    counter-reset: ql-counter;
+    position: relative;
+    left: 2rem;
+    width: 90%;
+    padding-left: 0;
+  }
+}
+
+/* --- 6. Controls --- */
+.social-picker {
+  border: none;
+  color: $biz-blue-bright;
+  font-family: $font-family-sans-serif;
+  font-size: 0.9rem;
+}
+
+.btn-group-vertical.shadow .btn-dark {
+  background-color: $biz-fg;
+  border: none;
+  &:hover { background-color: $biz-blue-bright; }
 }
