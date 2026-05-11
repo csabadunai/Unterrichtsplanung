@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :subjects
   resources :lessons do
     resources :phases do
       collection do

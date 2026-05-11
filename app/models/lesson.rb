@@ -1,4 +1,5 @@
 class Lesson < ApplicationRecord
+  belongs_to :subject
   has_many :phases, -> { order(:position)}, dependent: :destroy
 
   def materials_summary
