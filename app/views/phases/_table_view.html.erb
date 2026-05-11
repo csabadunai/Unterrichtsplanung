@@ -5,7 +5,7 @@
     <%# Note: link_to @lesson goes to the show page, effectively 'canceling' editing %>
     <%= link_to "Cancel Editing", lesson_path(@lesson), class: "btn btn-secondary" %>
   <% else %>
-    <%= link_to "Edit All Phases", lesson_path(@lesson, editing: true), class: "btn btn-light" %>
+    <%= link_to "Edit All Phases", lesson_path(@lesson, editing: true), class: "btn btn-dark" %>
   <% end %>
 </div>
 
@@ -44,6 +44,6 @@
 
 <div class="header-actions mb-3">
   <% if params[:editing] %>
-    <%= link_to "New phase", new_lesson_phase_path(@lesson), class: "btn btn-outline-light" %>
+    <%= link_to "New phase", new_lesson_phase_path(@lesson), class: "btn btn-outline-dark" %>
   <% end %>
 </div>
