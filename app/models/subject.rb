@@ -58,11 +58,11 @@ class Subject < ApplicationRecord
   end
 
   def lessons_by_week_and_day
-    # We add .where.not(start_time: nil) to filter out broken records
     lessons.includes(:phases)
       .where.not(start_time: nil)
       .order(:start_time)
-      .group_by { |l| l.start_time.strftime('%V').to_i }
+    # Group by the actual Monday date of that week
+      .group_by { |l| l.start_time.beginning_of_week.to_date }
       .transform_values do |week_lessons|
         week_lessons.group_by { |l| l.start_time.wday }
       end

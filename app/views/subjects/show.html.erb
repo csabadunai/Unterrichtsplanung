@@ -22,11 +22,11 @@
             <% end %>
 
             <div class="ms-auto"> <%= button_to @subject, 
-                  method: :delete, 
-                  class: "btn btn-sm btn-outline-danger", 
-                  data: { confirm: "Are you sure?" } do %>
-                <i class="bi bi-trash"></i>
-              <% end %>
+              method: :delete, 
+              class: "btn btn-sm btn-outline-danger", 
+              data: { turbo_confirm: "Are you sure? This will delete all associated lessons." } do %>
+              <i class="bi bi-trash"></i>
+            <% end %>
             </div>
           </div>
         </div>
@@ -107,9 +107,18 @@
                     <% end %>
 
                     <%= link_to "Edit", lesson_path(lesson), class: "btn btn-sm btn-link p-0 mt-2 text-decoration-none" %>
-                    <%= link_to lesson_path(lesson), class: "btn btn-sm btn-outline-danger", tabindex: "-1", title: "Delete", data: { turbo_method: :delete, turbo_confirm: "Are you sure?", turbo_frame: "_top" } do %>
-                      <i class="bi bi-trash3"></i>
-                    <% end %>
+<%= link_to lesson_path(lesson), 
+    class: "btn btn-sm btn-outline-danger", 
+    tabindex: "-1", 
+    title: "Delete", 
+    data: { 
+      turbo_method: :delete, 
+      # Only add the confirmation if there are phases present
+      turbo_confirm: (lesson.phases.any? ? "This lesson has phases. Are you sure you want to delete it?" : nil), 
+      turbo_frame: "_top" 
+    } do %>
+  <i class="bi bi-trash3"></i>
+<% end %>
                   </div>
                 <% end %>
               </td>

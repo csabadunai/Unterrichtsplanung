@@ -1,22 +1,29 @@
-<div id="<%= dom_id subject %>">
-  <div>
-    <strong>Name:</strong>
-    <%= subject.name %>
+<div id="<%= dom_id subject %>" class="card h-100 shadow-sm border-0 bg-white">
+  <div class="card-body">
+    <h5 class="card-title fw-bold mb-3" style="color: #0969da;">
+      <%= subject.name %>
+    </h5>
+
+    <div class="mb-2 text-muted small">
+      <i class="bi bi-people me-2"></i><strong>Group:</strong> <%= subject.group %>
+    </div>
+    <div class="mb-2 text-muted small">
+      <i class="bi bi-door-open me-2"></i><strong>Room:</strong> <%= subject.room %>
+    </div>
+
+    <div class="mt-3">
+      <span class="uppercase-label text-muted" style="font-size: 0.65rem; display: block; margin-bottom: 4px;">Schedule</span>
+      <div class="d-flex flex-wrap gap-1">
+        <% subject.schedule_items.each do |item| %>
+          <span class="badge bg-light text-dark border"><%= item.split(',')[0] %></span>
+        <% end %>
+      </div>
+    </div>
   </div>
 
-  <div>
-    <strong>Group:</strong>
-    <%= subject.group %>
+  <div class="card-footer bg-transparent border-0 pt-0 pb-3">
+    <%= link_to subject, class: "btn btn-sm btn-outline-primary w-100 stretched-link" do %>
+      View Planer
+    <% end %>
   </div>
-
-  <div>
-    <strong>Room:</strong>
-    <%= subject.room %>
-  </div>
-
-  <div>
-    <strong>Schedule data:</strong>
-    <%= subject.schedule_data %>
-  </div>
-
 </div>
