@@ -8,3 +8,85 @@
 
   <%= button_to "Destroy this subject", @subject, method: :delete %>
 </div>
+
+<div class="card border-primary shadow-sm mt-5">
+  <div class="card-header bg-primary text-white">
+    <h5 class="mb-0" style="font-family: 'Questrial';">Lesson Generator</h5>
+  </div>
+  <div class="card-body">
+    <p class="text-muted small">Select a date range to automatically create lessons based on the schedule.</p>
+    
+    <%= form_with url: generate_lessons_subject_path(@subject), method: :post, class: "row g-3 align-items-end" do |f| %>
+      <div class="col-md-4">
+        <%= f.label :start_date, "Start Date", class: "form-label uppercase-label" %>
+        <%= f.date_field :start_date, value: Date.today, class: "form-control shadow-sm" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.label :end_date, "End Date", class: "form-label uppercase-label" %>
+        <%= f.date_field :end_date, value: Date.today + 1.month, class: "form-control shadow-sm" %>
+      </div>
+      <div class="col-md-4">
+        <%= f.submit "Generate Lessons", class: "btn btn-primary w-100 py-2", 
+            data: { confirm: "This will generate multiple lessons. Continue?" } %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="table-responsive mt-5">
+  <table class="table table-bordered align-middle shadow-sm bg-white" style="border-radius: 8px; overflow: hidden;">
+    <thead class="table-light">
+      <tr>
+        <th class="uppercase-label text-center" style="width: 80px;">KW</th>
+        <% @subject.active_days.each do |day_idx| %>
+          <th class="uppercase-label"><%= Date::DAYNAMES[day_idx] %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @subject.lessons_by_week_and_day.each do |week, days| %>
+        <tr>
+          <td class="text-center fw-bold text-primary bg-light">
+            <%= week %>
+          </td>
+          <% @subject.active_days.each do |day_idx| %>
+            <td style="min-width: 250px; vertical-align: top;">
+              <% Array(days[day_idx]).each do |lesson| %>
+                <div class="p-2 mb-2 border rounded shadow-xs bg-white">
+                  <div class="d-flex justify-content-between align-items-start mb-1">
+                    <strong style="color: #0969da;"><%= lesson.title %></strong>
+                    <span class="badge bg-light text-dark border">
+                      <%= lesson.start_time.strftime("%H:%M") %>
+                    </span>
+                  </div>
+                  
+                  <div class="small text-muted mb-2">
+                    <i class="bi bi-calendar3 me-1"></i> <%= lesson.start_time.strftime("%d.%m.") %> |
+                    <i class="bi bi-people me-1"></i> <%= @subject.group %> |
+                    <i class="bi bi-door-open me-1"></i> <%= @subject.room %>
+                  </div>
+
+                  <% if lesson.materials_summary.any? %>
+                    <div class="mt-2 p-1 bg-light rounded" style="font-size: 0.75rem;">
+                      <div class="fw-bold uppercase-label mb-1" style="font-size: 0.6rem;">Materials:</div>
+                      <ul class="list-unstyled mb-0 ps-1">
+                        <% lesson.materials_summary.each do |mat| %>
+                          <li><i class="bi bi-dash"></i> <%= mat %></li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  <% end %>
+                  
+                  <%= link_to "Edit", lesson_path(lesson), class: "btn btn-sm btn-link p-0 mt-2 text-decoration-none" %>
+                  <%= link_to lesson_path(lesson), class: "btn btn-sm btn-outline-danger", tabindex: "-1", title: "Delete", data: { turbo_method: :delete, turbo_confirm: "Are you sure?", turbo_frame: "_top" } do %>
+                    <i class="bi bi-trash3"></i>
+                  <% end %>
+                </div>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

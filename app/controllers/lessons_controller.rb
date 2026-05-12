@@ -52,7 +52,7 @@ class LessonsController < ApplicationController
     @lesson.destroy!
 
     respond_to do |format|
-      format.html { redirect_to lessons_path, notice: "Lesson was successfully destroyed.", status: :see_other }
+      format.html { redirect_to subject_path(@lesson.subject), notice: "Lesson was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end

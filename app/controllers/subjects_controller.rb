@@ -57,6 +57,18 @@ class SubjectsController < ApplicationController
     end
   end
 
+  def generate_lessons
+    @subject = Subject.find(params[:id])
+    start_date = Date.parse(params[:start_date])
+    end_date = Date.parse(params[:end_date])
+
+    if @subject.generate_lessons!(start_date, end_date)
+      redirect_to @subject, notice: "Lessons successfully generated!"
+    else
+      redirect_to @subject, alert: "Generation failed."
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_subject

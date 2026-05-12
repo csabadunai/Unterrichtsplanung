@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :subjects
+  resources :subjects do
+    member do
+      post :generate_lessons
+    end
+  end
   resources :lessons do
     resources :phases do
       collection do

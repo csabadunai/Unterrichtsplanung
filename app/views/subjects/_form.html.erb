@@ -26,12 +26,16 @@
     <%= form.text_field :room %>
   </div>
 
-  <div>
-    <%= form.label :schedule_data, style: "display: block" %>
-    <%= form.textarea :schedule_data %>
+  <div class="mb-3">
+    <%= form.label :schedule_data, "Schedule (Day,Time,Duration [=number of lessons] )", class: "form-label uppercase-label" %>
+    <%= form.text_area :schedule_data, 
+      class: "form-control shadow-sm #{'is-invalid' if subject.errors[:schedule_data].any?}",
+      rows: 4,
+      placeholder: "Mo,08:00,2\nFr,10:15,1" %>
+    <div class="form-text text-muted small">One entry per line. Example: Di,13:30,2</div>
   </div>
 
   <div>
-    <%= form.submit %>
+    <%= form.submit "Save Subject", class: "btn btn-primary px-4 shadow-sm" %>
   </div>
 <% end %>
