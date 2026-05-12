@@ -1,5 +1,7 @@
 class Subject < ApplicationRecord
   has_many :lessons, dependent: :destroy
+  validate :validate_schedule_data_format
+  before_save :normalize_schedule_data
 
   def schedule_items
     schedule_data.to_s.split(/\r?\n/).map(&:strip).reject(&:blank?)
