@@ -1,11 +1,12 @@
 <p style="color: green"><%= notice %></p>
 
-<div class="row mb-5">
+<div class="row">
   <div class="col-md-6">
-    <div class="card border-primary shadow-sm mt-5 h-100"> <div class="card-header bg-primary text-white">
+    <div class="card rounded-0 border-primary shadow-sm h-100">
+      <div class="card-header rounded-0 bg-dark text-primary">
         <h5 class="mb-0" style="font-family: 'Questrial';"><%= @subject.name %></h5>
       </div>
-      
+
       <div class="card-body d-flex flex-column">
         <div class="mb-4">
           <%= render @subject %>
@@ -16,7 +17,7 @@
             <%= link_to edit_subject_path(@subject), class: "btn btn-sm btn-outline-dark" do %>
               <i class="bi bi-pencil me-1"></i> Edit
             <% end %>
-            
+
             <%= link_to subjects_path, class: "btn btn-sm btn-outline-secondary" do %>
               <i class="bi bi-arrow-left me-1"></i> Back
             <% end %>
@@ -35,8 +36,8 @@
   </div>
 
   <div class="col-md-6">
-    <div class="card border-primary shadow-sm mt-5 h-100">
-      <div class="card-header bg-primary text-white">
+    <div class="card border-primary rounded-0 shadow-sm h-100">
+      <div class="card-header rounded-0 bg-dark text-primary">
         <h5 class="mb-0" style="font-family: 'Questrial';">Lesson Generator</h5>
       </div>
       <div class="card-body">
@@ -52,7 +53,7 @@
             <%= f.date_field :end_date, value: Date.today + 1.month, class: "form-control shadow-sm" %>
           </div>
           <div class="col-12 mt-3">
-            <%= f.submit "Generate Lessons", class: "btn btn-primary w-100 py-2 shadow-sm" %>
+            <%= f.submit "Generate Lessons", class: "btn btn-outline-primary w-100 py-2 shadow-sm" %>
           </div>
         <% end %>
       </div>
@@ -75,50 +76,58 @@
       <tbody>
         <% @subject.lessons_by_week_and_day.each do |week, days| %>
           <tr>
-            <td class="text-center fw-bold text-primary bg-light">
+            <td class="text-center fw-bold bg-light">
               <%= week %>
             </td>
             <% @subject.active_days.each do |day_idx| %>
               <td style="min-width: 250px; vertical-align: top;">
                 <% Array(days[day_idx]).each do |lesson| %>
-                  <div class="p-2 mb-2 border rounded shadow-xs bg-white">
-                    <div class="d-flex justify-content-between align-items-start mb-1">
-                      <strong style="color: #0969da;"><%= lesson.title %></strong>
-                      <span class="badge bg-light text-dark border">
-                        <%= lesson.start_time.strftime("%H:%M") %>
+                  <div class="p-3 mb-3 border-start border-primary border-3 shadow-sm bg-white">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                      <%# The Title: Clean, bold, and clearly a link without the 'button' bulk %>
+                      <h6 class="mb-0 fw-bold">
+                        <%= link_to lesson.title, lesson_path(lesson), 
+                          class: "text-decoration-none subject-link" %>
+                      </h6>
+
+                      <span class="badge bg-light text-dark border fw-normal">
+                        <i class="bi bi-clock me-1 text-muted"></i><%= lesson.start_time.strftime("%H:%M") %>
                       </span>
                     </div>
 
-                    <div class="small text-muted mb-2">
-                      <i class="bi bi-calendar3 me-1"></i> <%= lesson.start_time.strftime("%d.%m.") %> |
-                      <i class="bi bi-people me-1"></i> <%= @subject.group %> |
-                      <i class="bi bi-door-open me-1"></i> <%= @subject.room %>
+                    <div class="small text-muted mb-3 d-flex flex-wrap gap-2">
+                      <span><i class="bi bi-calendar3 me-1"></i><%= lesson.start_time.strftime("%d.%m.") %></span>
+                      <span class="text-secondary">|</span>
+                      <span><i class="bi bi-people me-1"></i><%= @subject.group %></span>
+                      <span class="text-secondary">|</span>
+                      <span><i class="bi bi-door-open me-1"></i><%= @subject.room %></span>
                     </div>
 
                     <% if lesson.materials_summary.any? %>
-                      <div class="mt-2 p-1 bg-light rounded" style="font-size: 0.75rem;">
-                        <div class="fw-bold uppercase-label mb-1" style="font-size: 0.6rem;">Materials:</div>
+                      <div class="mt-2 p-2 bg-light border-start" style="font-size: 0.8rem;">
+                        <div class="fw-bold uppercase-label mb-1 text-secondary" style="font-size: 0.65rem;">Planned Materials</div>
                         <ul class="list-unstyled mb-0 ps-1">
                           <% lesson.materials_summary.each do |mat| %>
-                            <li><i class="bi bi-dash"></i> <%= mat %></li>
+                            <li><i class="bi bi-check2 text-primary me-1"></i><%= mat %></li>
                           <% end %>
                         </ul>
                       </div>
                     <% end %>
 
-                    <%= link_to "Edit", lesson_path(lesson), class: "btn btn-sm btn-link p-0 mt-2 text-decoration-none" %>
-<%= link_to lesson_path(lesson), 
-    class: "btn btn-sm btn-outline-danger", 
-    tabindex: "-1", 
-    title: "Delete", 
-    data: { 
-      turbo_method: :delete, 
-      # Only add the confirmation if there are phases present
-      turbo_confirm: (lesson.phases.any? ? "This lesson has phases. Are you sure you want to delete it?" : nil), 
-      turbo_frame: "_top" 
-    } do %>
-  <i class="bi bi-trash3"></i>
-<% end %>
+                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                      <%= link_to edit_lesson_path(lesson), class: "btn btn-sm btn-outline-primary border-0 ps-0 text-decoration-none" do %>
+                        <i class="bi bi-pencil-square me-1"></i>Edit
+                      <% end %>
+
+                      <%= link_to lesson_path(lesson), 
+                        class: "btn btn-sm btn-link text-danger p-0 text-decoration-none", 
+                        data: { 
+                          turbo_method: :delete, 
+                          turbo_confirm: (lesson.phases.any? ? "This lesson has phases. Delete it?" : nil) 
+                        } do %>
+                        <i class="bi bi-trash3"></i>
+                      <% end %>
+                    </div>
                   </div>
                 <% end %>
               </td>

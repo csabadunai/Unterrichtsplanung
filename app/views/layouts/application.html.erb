@@ -32,30 +32,54 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <div class="container">
-      <nav class="navbar navbar-expand-lg bg-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand text-light" href="/">Hyperplaner</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link text-light" aria-current="page" href="/subjects">Subjects</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-light" aria-current="page" href="/lessons">Lessons</a>
-              </li>
-            </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-          </div>
+  <body style="background-color: #f8f9fa; font-family: 'Questrial', sans-serif;">
+    <%# DARK NAVBAR with Green Brand Accent %>
+    <nav class="navbar navbar-expand-lg" style="background-color: #1a1d21; border-bottom: 2px solid #09da69;">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="/" style="color: #09da69;">Hyperplaner</a>
+        <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <%= link_to "Subjects", subjects_path, class: "nav-link text-light opacity-75" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Lessons", lessons_path, class: "nav-link text-light opacity-75" %>
+            </li>
+          </ul>
         </div>
-      </nav>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <% if (controller_name == 'subjects' || controller_name == 'lessons') && action_name == 'show' %>
+        <nav aria-label="breadcrumb" class="mb-4">
+          <%# Dark Breadcrumb with Green Active Text %>
+          <ol class="breadcrumb bg-dark p-3 shadow-sm rounded-0 border-start border-4" style="border-color: #09da69 !important;">
+            <li class="breadcrumb-item">
+              <%= link_to "Dashboard", subjects_path, class: "text-decoration-none text-light opacity-50 small" %>
+            </li>
+
+            <% if controller_name == 'subjects' %>
+              <li class="breadcrumb-item active fw-bold" style="color: #09da69;">
+                <%= @subject.name %>
+              </li>
+            <% end %>
+
+            <% if controller_name == 'lessons' %>
+              <li class="breadcrumb-item">
+                <%= link_to @lesson.subject.name, subject_path(@lesson.subject), class: "text-decoration-none text-light opacity-50 small" %>
+              </li>
+              <li class="breadcrumb-item active fw-bold" style="color: #09da69;">
+                <%= @lesson.title %>
+              </li>
+            <% end %>
+          </ol>
+        </nav>
+      <% end %>
+
       <%= yield %>
     </div>
   </body>

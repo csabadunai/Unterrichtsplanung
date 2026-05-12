@@ -1,25 +1,27 @@
 /* --- 1. Core Palette & Variables --- */
-$biz-bg0:           #ffffff; 
-$biz-bg1:           #ffffff; 
-$biz-bg2:           #d0d7de; 
-$biz-fg:            #1f2328; 
+$csabi-bg0:           #ffffff; 
+$csabi-bg1:           #ffffff; 
+$csabi-bg2:           #d0d7de; 
+$csabi-fg:            #1f2328; 
 
-$biz-blue-bright:   #0969da; 
-$biz-blue-dim:      #0550ae;
-$biz-red:           #cf222e;
+$csabi-blue-bright:   #0969da; 
+$csabi-green-bright:  #09da69; 
+$csabi-blue-dim:      #0550ae;
+$csabi-red:           #cf222e;
 
 /* --- 2. Typography & Bootstrap Overrides --- */
 $font-family-sans-serif: 'Questrial', sans-serif;
 
-$primary:           $biz-blue-bright; 
-$danger:            $biz-red;
+$primary:           #198754; 
+$danger:            $csabi-red;
 $secondary:         #656d76; 
-$body-bg:           $biz-bg0;
-$body-color:        $biz-fg;
-$border-color:      $biz-bg2;
+$success:           $csabi-green-bright;
+$body-bg:           $csabi-bg0;
+$body-color:        $csabi-fg;
+$border-color:      $csabi-bg2;
 
 $input-focus-width:        0.2rem;
-$input-focus-box-shadow:   0 0 0 $input-focus-width rgba($biz-blue-bright, 0.12);
+$input-focus-box-shadow:   0 0 0 $input-focus-width rgba($csabi-green-bright, 0.12);
 
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
@@ -37,12 +39,12 @@ body {
 
 .row.g-0 {
   margin: 0;
-  background-color: $biz-bg0;
+  background-color: $csabi-bg0;
 }
 
 /* Header Row labels */
 .row.g-0.border-top.border-bottom:first-of-type > div {
-  background-color: $biz-bg1;
+  background-color: $csabi-bg1;
   color: $secondary;
   font-weight: 400; // Questrial is a single weight, but looks great here
   font-size: 0.75rem;
@@ -59,7 +61,7 @@ body {
   z-index: 9999;
   background: white;
   border: none !important;
-  border-bottom: 1px solid $biz-bg2 !important;
+  border-bottom: 1px solid $csabi-bg2 !important;
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
@@ -79,14 +81,13 @@ body {
   line-height: 1.6;
   scroll-margin-top: 65px;
   min-height: 100px;
-  color: $biz-fg;
+  color: $csabi-fg;
 }
 
 /* Focus States & Glows */
 .quill-editor-instance:focus-within,
 .col-2 textarea.form-control:focus {
   background-color: #fff !important;
-  //border-left: 3px solid $biz-blue-bright !important;
   box-shadow: $input-focus-box-shadow !important;
   transition: all 0.15s ease-in-out;
   outline: none;
@@ -127,19 +128,32 @@ body {
 /* --- 6. Controls --- */
 .social-picker {
   border: none;
-  color: $biz-blue-bright;
+  color: $csabi-green-bright;
   font-family: $font-family-sans-serif;
   font-size: 0.9rem;
 }
 
 .btn-group-vertical.shadow .btn-dark {
-  background-color: $biz-fg;
+  background-color: $csabi-fg;
   border: none;
-  &:hover { background-color: $biz-blue-bright; }
+  &:hover { background-color: $csabi-green-bright; }
 }
 .col-2.border-start.border-end {
   white-space: pre-line; /* This respects the line breaks from the database */
   font-size: 0.9rem;
   line-height: 1.4;
   color: $secondary;
+}
+
+.shadow-hover {
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.shadow-hover:hover {
+  border: 1px solid #dee2e6 !important;
+}
+.breadcrumb-item + .breadcrumb-item::before {
+  color: rgba(255, 255, 255, 0.6) !important;
+  content: var(--bs-breadcrumb-divider, "→") !important;
 }

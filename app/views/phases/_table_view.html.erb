@@ -1,12 +1,29 @@
 <div class="header-actions mb-3">
+  <div class="row g-2 mb-3"> <%# g-2 adds a small gap between buttons %>
   <% if params[:editing] %>
+    <%# Hidden form for bulk update %>
     <%= form_with url: bulk_update_lesson_phases_path(@lesson), method: :patch, id: "bulk-edit-form" do %><% end %>
-    <button type="submit" form="bulk-edit-form" class="btn btn-success">Save All Phases</button>
-    <%# Note: link_to @lesson goes to the show page, effectively 'canceling' editing %>
-    <%= link_to "Cancel Editing", lesson_path(@lesson), class: "btn btn-secondary" %>
+
+    <div class="col-6">
+      <button type="submit" form="bulk-edit-form" class="btn btn-primary w-100 rounded-0 shadow-sm">
+        <i class="bi bi-check-lg me-1"></i> Save All
+      </button>
+    </div>
+
+    <div class="col-6">
+      <%= link_to lesson_path(@lesson), class: "btn btn-secondary w-100 rounded-0 shadow-sm" do %>
+        <i class="bi bi-x-lg me-1"></i> Cancel
+      <% end %>
+    </div>
+
   <% else %>
-    <%= link_to "Edit All Phases", lesson_path(@lesson, editing: true), class: "btn btn-dark" %>
+    <div class="col-12">
+      <%= link_to lesson_path(@lesson, editing: true), class: "btn btn-dark w-100 rounded-0 shadow-sm" do %>
+        <i class="bi bi-pencil-square me-2"></i> Edit All Phases
+      <% end %>
+    </div>
   <% end %>
+  </div>
 </div>
 
 <div class="row g-0 border-top border-bottom">
