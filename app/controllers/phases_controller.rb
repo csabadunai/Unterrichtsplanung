@@ -22,7 +22,7 @@ class PhasesController < ApplicationController
                    bulk_params.values.first
                  end
 
-    safe_attributes = attributes ? attributes.permit(:duration, :social, :description, :differentiation, :materials, :position) : phase_params
+    safe_attributes = attributes ? attributes.permit(:duration, :social, :title, :description, :differentiation, :materials, :position) : phase_params
 
     # Build through @lesson to ensure foreign key is set
     @phase = @lesson.phases.build(safe_attributes)
@@ -46,7 +46,7 @@ class PhasesController < ApplicationController
     params[:phases].each do |id, attributes|
       # Safety: only find phases belonging to THIS lesson
       phase = @lesson.phases.find(id)
-      safe_attributes = attributes.permit(:duration, :social, :description, :differentiation, :materials, :position)
+      safe_attributes = attributes.permit(:duration, :social, :title, :description, :differentiation, :materials, :position)
       phase.update(safe_attributes)
     end
 
@@ -88,6 +88,6 @@ class PhasesController < ApplicationController
   end
 
   def phase_params
-    params.expect(phase: [ :duration, :social, :description, :differentiation, :materials, :position ])
+    params.expect(phase: [ :duration, :social, :title, :description, :differentiation, :materials, :position ])
   end
 end

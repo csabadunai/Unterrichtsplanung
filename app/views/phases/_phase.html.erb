@@ -6,6 +6,7 @@
   </div>
 
   <div class="col-6 rich-text-output border-start border-end">
+    <h5><%= phase.title %></h5>
     <%= sanitize phase.description, 
       tags: %w(strong h1 h2 h3 em b i p br ul ol li span u), 
       attributes: %w(style class data-list) %> <%# Added data-list here %>

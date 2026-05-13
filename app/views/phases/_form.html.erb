@@ -57,6 +57,12 @@
 
   <%# 2. Description (6 cols) %>
   <div class="col-6 border-start border-end">
+    <div class="p-1 bg-light border-bottom">
+      <%= f.text_field :title, 
+        class: "form-control form-control-sm fw-bold border-0 bg-transparent", 
+        placeholder: "Phase Title (e.g. Introduction, Brainstorming...)", 
+        form: form_id %>
+    </div>
     <% desc_id = "phase_desc_#{phase.id || "new_#{phase.object_id}"}" %>
     <%= f.hidden_field :description, id: "#{desc_id}_input", form: form_id %>
     <div id="<%= desc_id %>_editor" class="quill-editor-instance">

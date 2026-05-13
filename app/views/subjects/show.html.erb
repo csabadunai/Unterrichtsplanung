@@ -103,6 +103,22 @@
                       <span><i class="bi bi-door-open me-1"></i><%= @subject.room %></span>
                     </div>
 
+                    <% # Phases Summary %>
+                    <% titles = lesson.phases_summary %>
+                    <% if titles.any? %>
+                      <div class="mb-2 p-2 bg-white border shadow-sm">
+                        <div class="fw-bold uppercase-label mb-1 text-primary" style="font-size: 0.65rem;">
+                          <i class="bi bi-journal-text me-1"></i>Ablauf
+                        </div>
+                        <ol class="ps-3 mb-0 text-dark">
+                          <% titles.each do |title| %>
+                            <li><%= title %></li>
+                          <% end %>
+                        </ol>
+                      </div>
+                    <% end %>
+
+                    <% # Material Summary %>
                     <% if lesson.materials_summary.any? %>
                       <div class="mt-2 p-2 bg-light border-start" style="font-size: 0.8rem;">
                         <div class="fw-bold uppercase-label mb-1 text-secondary" style="font-size: 0.65rem;">Planned Materials</div>

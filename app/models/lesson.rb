@@ -6,4 +6,8 @@ class Lesson < ApplicationRecord
   def materials_summary
     phases.flat_map(&:materials_list).uniq.sort_by(&:downcase)
   end
+  
+  def phases_summary
+    phases.order(:position).pluck(:title).reject(&:blank?)
+  end
 end

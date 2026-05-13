@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_11_082350) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_13_065615) do
   create_table "lessons", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "duration", default: 1
@@ -30,6 +30,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_11_082350) do
     t.string "materials"
     t.integer "position"
     t.string "social"
+    t.string "title"
     t.datetime "updated_at", null: false
     t.index ["lesson_id"], name: "index_phases_on_lesson_id"
   end
