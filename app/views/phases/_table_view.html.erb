@@ -4,16 +4,18 @@
     <%# Hidden form for bulk update %>
     <%= form_with url: bulk_update_lesson_phases_path(@lesson), method: :patch, id: "bulk-edit-form" do %><% end %>
 
-    <div class="col-6">
-      <button type="submit" form="bulk-edit-form" class="btn btn-primary w-100 rounded-0 shadow-sm">
-        <i class="bi bi-check-lg me-1"></i> Save All
-      </button>
-    </div>
+    <div class="btn-group">
+      <div class="col-6">
+        <button type="submit" form="bulk-edit-form" class="btn btn-primary w-100 rounded-0 shadow-sm">
+          <i class="bi bi-check-lg me-1"></i> Save All
+        </button>
+      </div>
 
-    <div class="col-6">
-      <%= link_to lesson_path(@lesson), class: "btn btn-secondary w-100 rounded-0 shadow-sm" do %>
-        <i class="bi bi-x-lg me-1"></i> Cancel
-      <% end %>
+      <div class="col-6">
+        <%= link_to lesson_path(@lesson), class: "btn btn-secondary w-100 rounded-0 shadow-sm" do %>
+          <i class="bi bi-x-lg me-1"></i> Cancel
+        <% end %>
+      </div>
     </div>
 
   <% else %>
