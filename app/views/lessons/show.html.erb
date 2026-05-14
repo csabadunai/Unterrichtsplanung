@@ -1,59 +1,70 @@
 <p style="color: green"><%= notice %></p>
 
-<div class="row">
-  <div class="col-md-6">
-    <div class="card rounded-0 border-primary shadow-sm h-100">
-      <div class="card-header rounded-0 bg-dark text-primary">
-        <h5 class="mb-0"><%= @lesson.title %></h5>
-      </div>
-      <div class="card-body d-flex flex-column">
-        <p><strong>Start:</strong> <%= @lesson.start_time %></p>
-        <p><strong>Duration:</strong> <%= @lesson.duration %> blocks</p>
-        <div class="mt-auto pt-3 border-top">
-          <div class="d-flex flex-wrap gap-2">
-            <%= link_to edit_lesson_path(@lesson), class: "btn btn-sm btn-outline-dark" do %>
-              <i class="bi bi-pencil me-1"></i> Edit
-            <% end %>
+<%# 1. THE TOGGLE BUTTON %>
+<div class="mb-3 text-end">
+  <button class="btn btn-sm btn-outline-secondary shadow-sm" type="button" 
+          data-bs-toggle="collapse" data-bs-target="#subjectAdminPanel" 
+          aria-expanded="false" aria-controls="subjectAdminPanel">
+    <i class="bi bi-sliders2-vertical me-1"></i> Toggle Overview
+  </button>
+</div>
 
-            <%= link_to subject_path(@lesson.subject), class: "btn btn-sm btn-outline-secondary" do %>
-              <i class="bi bi-arrow-left me-1"></i> Back
-            <% end %>
+<div class="collapse mb-4" id="subjectAdminPanel">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card rounded-0 border-primary shadow-sm h-100">
+        <div class="card-header rounded-0 bg-dark text-primary">
+          <h5 class="mb-0"><%= @lesson.title %></h5>
+        </div>
+        <div class="card-body d-flex flex-column">
+          <p><strong>Start:</strong> <%= @lesson.start_time %></p>
+          <p><strong>Duration:</strong> <%= @lesson.duration %> blocks</p>
+          <div class="mt-auto pt-3 border-top">
+            <div class="d-flex flex-wrap gap-2">
+              <%= link_to edit_lesson_path(@lesson), class: "btn btn-sm btn-outline-dark" do %>
+                <i class="bi bi-pencil me-1"></i> Edit
+              <% end %>
 
-            <div class="ms-auto"> <%= button_to @lesson, 
-              method: :delete, 
-              class: "btn btn-sm btn-outline-danger", 
-              data: { turbo_confirm: "Are you sure? This will delete all associated lessons." } do %>
-              <i class="bi bi-trash"></i>
-            <% end %>
+              <%= link_to subject_path(@lesson.subject), class: "btn btn-sm btn-outline-secondary" do %>
+                <i class="bi bi-arrow-left me-1"></i> Back
+              <% end %>
+
+              <div class="ms-auto"> <%= button_to @lesson, 
+                method: :delete, 
+                class: "btn btn-sm btn-outline-danger", 
+                data: { turbo_confirm: "Are you sure? This will delete all associated lessons." } do %>
+                <i class="bi bi-trash"></i>
+              <% end %>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="col-md-6">
-    <div class="card rounded-0 border-primary shadow-sm h-100">
-      <div class="card-header rounded-0 bg-dark text-primary">
-        <h5 class="mb-0">Materialliste</h5>
-      </div>
-      <div class="card-body">
-        <% if @lesson.materials_summary.any? %>
-          <ul class="list-group list-group-flush">
-            <% @lesson.materials_summary.each do |item| %>
-              <li class="list-group-item d-flex align-items-center">
-                <i class="bi bi-check2-square me-2 text-primary"></i>
-                <%= item %>
-              </li>
-            <% end %>
-          </ul>
-        <% else %>
-          <p class="text-muted italic">No materials listed for this lesson.</p>
-        <% end %>
+    <div class="col-md-6">
+      <div class="card rounded-0 border-primary shadow-sm h-100">
+        <div class="card-header rounded-0 bg-dark text-primary">
+          <h5 class="mb-0">Materialliste</h5>
+        </div>
+        <div class="card-body">
+          <% if @lesson.materials_summary.any? %>
+            <ul class="list-group list-group-flush">
+              <% @lesson.materials_summary.each do |item| %>
+                <li class="list-group-item d-flex align-items-center">
+                  <i class="bi bi-check2-square me-2 text-primary"></i>
+                  <%= item %>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-muted italic">No materials listed for this lesson.</p>
+          <% end %>
+        </div>
       </div>
     </div>
-  </div>
 
+  </div>
 </div>
 
 <hr>

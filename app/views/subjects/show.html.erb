@@ -1,61 +1,69 @@
 <p style="color: green"><%= notice %></p>
 
-<div class="row">
-  <div class="col-md-6">
-    <div class="card rounded-0 border-primary shadow-sm h-100">
-      <div class="card-header rounded-0 bg-dark text-primary">
-        <h5 class="mb-0" style="font-family: 'Questrial';"><%= @subject.name %></h5>
-      </div>
+<%# 1. THE TOGGLE BUTTON %>
+<div class="mb-3 text-end">
+  <button class="btn btn-sm btn-outline-secondary shadow-sm" type="button" 
+          data-bs-toggle="collapse" data-bs-target="#subjectAdminPanel" 
+          aria-expanded="false" aria-controls="subjectAdminPanel">
+    <i class="bi bi-sliders2-vertical me-1"></i> Toggle Admin Panel
+  </button>
+</div>
 
-      <div class="card-body d-flex flex-column">
-        <div class="mb-4">
-          <%= render @subject %>
+<%# 2. THE COLLAPSIBLE WRAPPER %>
+<div class="collapse mb-4" id="subjectAdminPanel">
+  <div class="row">
+    <%# --- SUBJECT CARD --- %>
+    <div class="col-md-6">
+      <div class="card rounded-0 border-primary shadow-sm h-100">
+        <div class="card-header rounded-0 bg-dark text-primary">
+          <h5 class="mb-0" style="font-family: 'Questrial';"><%= @subject.name %></h5>
         </div>
-
-        <div class="mt-auto pt-3 border-top">
-          <div class="d-flex flex-wrap gap-2">
-            <%= link_to edit_subject_path(@subject), class: "btn btn-sm btn-outline-dark" do %>
-              <i class="bi bi-pencil me-1"></i> Edit
-            <% end %>
-
-            <%= link_to subjects_path, class: "btn btn-sm btn-outline-secondary" do %>
-              <i class="bi bi-arrow-left me-1"></i> Back
-            <% end %>
-
-            <div class="ms-auto"> <%= button_to @subject, 
-              method: :delete, 
-              class: "btn btn-sm btn-outline-danger", 
-              data: { turbo_confirm: "Are you sure? This will delete all associated lessons." } do %>
-              <i class="bi bi-trash"></i>
-            <% end %>
+        <div class="card-body d-flex flex-column">
+          <div class="mb-4">
+            <%= render @subject %>
+          </div>
+          <div class="mt-auto pt-3 border-top">
+            <div class="d-flex flex-wrap gap-2">
+              <%= link_to edit_subject_path(@subject), class: "btn btn-sm btn-outline-dark" do %>
+                <i class="bi bi-pencil me-1"></i> Edit
+              <% end %>
+              <%= link_to subjects_path, class: "btn btn-sm btn-outline-secondary" do %>
+                <i class="bi bi-arrow-left me-1"></i> Back
+              <% end %>
+              <div class="ms-auto"> 
+                <%= button_to @subject, method: :delete, class: "btn btn-sm btn-outline-danger", 
+                    data: { turbo_confirm: "Are you sure? This will delete all associated lessons." } do %>
+                  <i class="bi bi-trash"></i>
+                <% end %>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="col-md-6">
-    <div class="card border-primary rounded-0 shadow-sm h-100">
-      <div class="card-header rounded-0 bg-dark text-primary">
-        <h5 class="mb-0" style="font-family: 'Questrial';">Lesson Generator</h5>
-      </div>
-      <div class="card-body">
-        <p class="text-muted small">Select a date range to automatically create lessons based on the schedule.</p>
-
-        <%= form_with url: generate_lessons_subject_path(@subject), method: :post, class: "row g-3 align-items-end" do |f| %>
-          <div class="col-md-6">
-            <%= f.label :start_date, "Start Date", class: "form-label uppercase-label" %>
-            <%= f.date_field :start_date, value: Date.today, class: "form-control shadow-sm" %>
-          </div>
-          <div class="col-md-6">
-            <%= f.label :end_date, "End Date", class: "form-label uppercase-label" %>
-            <%= f.date_field :end_date, value: Date.today + 1.month, class: "form-control shadow-sm" %>
-          </div>
-          <div class="col-12 mt-3">
-            <%= f.submit "Generate Lessons", class: "btn btn-outline-primary w-100 py-2 shadow-sm" %>
-          </div>
-        <% end %>
+    <%# --- GENERATOR CARD --- %>
+    <div class="col-md-6">
+      <div class="card border-primary rounded-0 shadow-sm h-100">
+        <div class="card-header rounded-0 bg-dark text-primary">
+          <h5 class="mb-0" style="font-family: 'Questrial';">Lesson Generator</h5>
+        </div>
+        <div class="card-body">
+          <p class="text-muted small">Select a date range to automatically create lessons based on the schedule.</p>
+          <%= form_with url: generate_lessons_subject_path(@subject), method: :post, class: "row g-3 align-items-end" do |f| %>
+            <div class="col-md-6">
+              <%= f.label :start_date, "Start Date", class: "form-label uppercase-label" %>
+              <%= f.date_field :start_date, value: Date.today, class: "form-control shadow-sm" %>
+            </div>
+            <div class="col-md-6">
+              <%= f.label :end_date, "End Date", class: "form-label uppercase-label" %>
+              <%= f.date_field :end_date, value: Date.today + 1.month, class: "form-control shadow-sm" %>
+            </div>
+            <div class="col-12 mt-3">
+              <%= f.submit "Generate Lessons", class: "btn btn-outline-primary w-100 py-2 shadow-sm" %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

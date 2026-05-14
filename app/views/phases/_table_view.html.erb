@@ -18,7 +18,7 @@
 
   <% else %>
     <div class="col-12">
-      <%= link_to lesson_path(@lesson, editing: true), class: "btn btn-dark w-100 rounded-0 shadow-sm" do %>
+      <%= link_to lesson_path(@lesson, editing: true), class: "btn btn-warning w-100 rounded-0 shadow-sm" do %>
         <i class="bi bi-pencil-square me-2"></i> Edit All Phases
       <% end %>
     </div>
@@ -26,23 +26,22 @@
   </div>
 </div>
 
-<div class="row g-0 border-top border-bottom">
-  <div class="col-1 border-start border-end">
-    Dauer &
-    <br>
-    Sozialform
+<div class="row g-0 border-top border-bottom bg-light fw-bold align-items-stretch text-secondary" style="font-size: 0.85rem;">
+  
+  <div class="col-1 border-start border-end p-2 d-flex align-items-start">
+    <span>Dauer &<br>Sozialform</span>
   </div>
 
-  <div class="col-6 border-start border-end">
-    Ablauf
+  <div class="col-6 border-start border-end p-2 d-flex align-items-start">
+    <span>Ablauf</span>
   </div>
 
-  <div class="col-3 border-start border-end">
-    Differenzierung
+  <div class="col-3 border-start border-end p-2 d-flex align-items-start">
+    <span>Differenzierung</span>
   </div>
 
-  <div class="col-2 border-start border-end">
-    Material
+  <div class="col-2 border-start border-end p-2 d-flex align-items-start">
+    <span>Material</span>
   </div>
 
 </div>
