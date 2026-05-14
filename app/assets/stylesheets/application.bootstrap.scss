@@ -158,3 +158,22 @@ body {
   color: rgba(255, 255, 255, 0.6) !important;
   content: var(--bs-breadcrumb-divider, "→") !important;
 }
+.user-avatar-circle {
+  width: 32px;
+  height: 32px;
+  background-color: #09da69;
+  color: #1a1d21;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border: 2px solid rgba(255,255,255,0.1);
+}
+
+/* Optional: hover effect for the dropdown */
+.nav-link:hover .user-avatar-circle {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}

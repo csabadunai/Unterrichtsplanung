@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   resources :subjects do
     member do
       post :generate_lessons
@@ -26,5 +27,5 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root "lessons#index"
+  root "subjects#index"
 end

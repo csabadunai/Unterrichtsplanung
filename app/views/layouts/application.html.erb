@@ -40,16 +40,45 @@
         <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <%= link_to "Subjects", subjects_path, class: "nav-link text-light opacity-75" %>
-            </li>
-            <li class="nav-item">
-              <%= link_to "Lessons", lessons_path, class: "nav-link text-light opacity-75" %>
-            </li>
-          </ul>
-        </div>
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item">
+      <%= link_to "Subjects", subjects_path, class: "nav-link text-light opacity-75" %>
+    </li>
+    <li class="nav-item">
+      <%= link_to "Lessons", lessons_path, class: "nav-link text-light opacity-75" %>
+    </li>
+  </ul>
+
+  <%# --- USER MENU ON THE RIGHT --- %>
+  <ul class="navbar-nav ms-auto align-items-center">
+    <% if user_signed_in? %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2 text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <%# The Sphere/Avatar %>
+          <div class="user-avatar-circle">
+            <%= current_user.email.first.upcase %>
+          </div>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+          <li><h6 class="dropdown-header">Account</h6></li>
+          <li><%= link_to "Settings", edit_user_registration_path, class: "dropdown-item" %></li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "dropdown-item text-danger" %>
+          </li>
+        </ul>
+      </li>
+    <% else %>
+      <li class="nav-item">
+        <%= link_to "Login", new_user_session_path, class: "btn btn-sm btn-outline-light me-2" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-sm btn-success text-dark fw-bold", style: "background-color: #09da69; border-color: #09da69;" %>
+      </li>
+    <% end %>
+  </ul>
+</div>
       </div>
     </nav>
 

@@ -3,7 +3,7 @@ class SubjectsController < ApplicationController
 
   # GET /subjects or /subjects.json
   def index
-    @subjects = Subject.all
+    @subjects = current_user.subjects
   end
 
   # GET /subjects/1 or /subjects/1.json
@@ -12,7 +12,7 @@ class SubjectsController < ApplicationController
 
   # GET /subjects/new
   def new
-    @subject = Subject.new
+    @subject = current_user.subjects.new
   end
 
   # GET /subjects/1/edit
@@ -21,7 +21,7 @@ class SubjectsController < ApplicationController
 
   # POST /subjects or /subjects.json
   def create
-    @subject = Subject.new(subject_params)
+    @subject = current_user.subjects.new(subject_params)
 
     respond_to do |format|
       if @subject.save
@@ -58,7 +58,7 @@ class SubjectsController < ApplicationController
   end
 
   def generate_lessons
-    @subject = Subject.find(params[:id])
+    #@subject = current_user.subjects.find(params[:id])
     start_date = Date.parse(params[:start_date])
     end_date = Date.parse(params[:end_date])
 
@@ -72,7 +72,7 @@ class SubjectsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_subject
-      @subject = Subject.find(params.expect(:id))
+      @subject = current_user.subjects.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.

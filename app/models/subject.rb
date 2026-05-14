@@ -1,4 +1,5 @@
 class Subject < ApplicationRecord
+  belongs_to :user
   has_many :lessons, dependent: :destroy
   validate :validate_schedule_data_format
   before_save :normalize_schedule_data
