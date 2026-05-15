@@ -124,4 +124,47 @@ class Subject < ApplicationRecord
       end
     end
   end
+
+  def timetable_top_offset(hour_height = 60)
+    # Default to 08:00 if start_time is missing
+    start_str = schedule_data&.dig("start_time").presence || "08:00"
+    time = Time.zone.parse(start_str)
+
+    # Minutes from 06:00
+    offset_minutes = (time.hour * 60 + time.min) - (6 * 60)
+    (offset_minutes / 60.0) * hour_height
+  end
+
+  def timetable_height(hour_height = 60)
+    # Default to 1 unit if missing
+    units = (schedule_data&.dig("duration_units") || 1).to_i
+    minutes = (units * 45) + ((units - 1) * 5)
+    (minutes / 60.0) * hour_height
+  end
+  def parsed_schedule_rows
+    schedule_items.map do |row|
+      parts = row.split(',').map(&:strip)
+      next if parts.length < 3
+
+      {
+        day_index: DAY_MAP[parts[0]].to_s, # "1", "2", etc.
+        start_time: parts[1],
+        duration_units: parts[2].to_i
+      }
+    end.compact
+  end
+
+  # Updated offset method that takes a specific start_time string
+  def timetable_top_offset(start_time_str, hour_height = 60)
+    time = Time.zone.parse(start_time_str) || Time.zone.parse("08:00")
+    offset_minutes = (time.hour * 60 + time.min) - (6 * 60)
+    (offset_minutes / 60.0) * hour_height
+  end
+
+  # Updated height method that takes specific units
+  def timetable_height(units, hour_height = 60)
+    u = units.to_i > 0 ? units.to_i : 1
+    minutes = (u * 45) + ((u - 1) * 5)
+    (minutes / 60.0) * hour_height
+  end
 end

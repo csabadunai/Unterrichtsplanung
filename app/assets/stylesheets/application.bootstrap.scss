@@ -14,7 +14,7 @@ $font-family-sans-serif: 'Questrial', sans-serif;
 
 $primary:           #198754; 
 $danger:            $csabi-red;
-$secondary:         #0b432a; 
+$secondary:         #cccccc; 
 $warning:           #ccaa00; 
 $success:           $csabi-green-bright;
 $body-bg:           $csabi-bg0;
@@ -176,4 +176,34 @@ body {
 .nav-link:hover .user-avatar-circle {
   transform: scale(1.05);
   transition: transform 0.2s ease;
+}
+
+.timetable-container {
+  min-width: 800px;
+  overflow-x: auto;
+}
+
+.day-column {
+  background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size: 100% 30px; /* Grid lines every 30 mins */
+}
+
+.timetable-entry {
+  z-index: 10;
+  transition: transform 0.1s ease, z-index 0.1s ease;
+}
+
+.timetable-entry:hover {
+  z-index: 100;
+  transform: scale(1.02);
+}
+
+.entry-content {
+  border-radius: 2px;
+  line-height: 1.1;
+}
+
+.uppercase-label {
+  letter-spacing: 1px;
+  font-size: 0.7rem;
 }

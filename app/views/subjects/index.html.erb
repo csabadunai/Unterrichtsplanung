@@ -9,11 +9,68 @@
 
 <div class="row g-4" id="subjects">
   <% @subjects.each do |subject| %>
-    <div id="<%= dom_id subject %>" class="card h-100 shadow-sm border-0 bg-white shadow-hover col-sm-6 col-md-4 col-lg-3">
-      <%= link_to subject.name, subject, class: "text-decoration-none stretched-link", style: "color: inherit;" %>
+    <div id="<%= dom_id subject %>" class="card h-100 shadow-sm border-0 bg-white shadow-hover col-sm-6 col-md-4 col-lg-4">
       <div class="">
         <%= render subject %>
       </div>
     </div>
   <% end %>
+</div>
+
+<hr>
+
+<%# --- Configuration Variables --- %>
+<% hour_height = 60 %>
+<% start_hour = 6 %>
+<% end_hour = 18 %>
+<% total_height = (end_hour - start_hour) * hour_height %>
+<% work_days = { "1" => "Monday", "2" => "Tuesday", "3" => "Wednesday", "4" => "Thursday", "5" => "Friday" } %>
+
+<div class="card shadow-sm border-0">
+  <div class="timetable-container position-relative bg-white border-bottom">
+    <div class="d-flex">
+      
+      <%# --- 1. TIME AXIS (LEFT) --- %>
+      <div class="time-axis border-end bg-light" style="width: 60px; flex-shrink: 0;">
+        <div style="height: 41px;" class="border-bottom"></div>
+        <% (start_hour..end_hour).each do |hour| %>
+          <div class="time-mark text-muted small fw-bold" style="height: <%= hour_height %>px;">
+            <%= "#{hour}:00" %>
+          </div>
+        <% end %>
+      </div>
+
+      <%# --- 2. DAYS COLUMNS --- %>
+      <div class="days-wrapper d-flex flex-grow-1 position-relative">
+        <% work_days.each do |day_val, day_name| %>
+          <div class="day-column flex-grow-1 border-end position-relative" style="min-width: 150px; height: <%= (end_hour - start_hour) * hour_height %>px;">
+
+            <div class="day-header text-center border-bottom fw-bold py-2 bg-dark text-primary small">
+              <%= day_name.upcase %>
+            </div>
+
+            <% @subjects.each do |subject| %>
+              <% subject.parsed_schedule_rows.each do |slot| %>
+                <% if slot[:day_index] == day_val %>
+                  
+                  <%= link_to subject_path(subject), 
+                      class: "timetable-entry position-absolute p-1 text-decoration-none",
+                      style: "top: #{subject.timetable_top_offset(slot[:start_time], hour_height)}px; 
+                              height: #{subject.timetable_height(slot[:duration_units], hour_height)}px; 
+                              left: 2px; right: 2px;" do %>
+                    
+                    <%# Render the partial and pass the specific variables %>
+                    <%= render "timetable_card", subject: subject, slot: slot %>
+                    
+                  <% end %>
+
+                <% end %>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
 </div>

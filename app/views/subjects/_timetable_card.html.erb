@@ -1,0 +1,11 @@
+<div class="entry-content h-100 bg-white p-1 ps-2 border border-1 border-dark overflow-hidden">
+  <div class="fw-bold text-dark lh-1" style="font-size: 0.7rem;">
+    <%= subject.name %> 
+    <span class="badge rounded-0 text-bg-light border border-1 p-0" style="font-size: 0.55rem;">
+      <%= subject.group %>
+    </span>
+  </div>
+  <div class="text-muted mt-1" style="font-size: 0.6rem;">
+    <%= slot[:start_time] %> • <%= subject.room %>
+  </div>
+</div>
