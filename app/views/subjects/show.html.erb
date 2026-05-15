@@ -13,7 +13,7 @@
 <div class="collapse mb-4" id="subjectAdminPanel">
   <div class="row">
     <%# --- SUBJECT CARD --- %>
-    <div class="col-md-6">
+    <div class="col-md-4">
       <div class="card rounded-0 border-primary shadow-sm h-100">
         <div class="card-header rounded-0 bg-dark text-primary">
           <h5 class="mb-0" style="font-family: 'Questrial';"><%= @subject.name %></h5>
@@ -42,8 +42,29 @@
       </div>
     </div>
 
+    <div class="col-md-4">
+      <div class="card rounded-0 border-primary shadow-sm h-100">
+        <div class="card-header rounded-0 bg-dark text-primary">
+          <h6>Share this Subject</h6>
+        </div>
+        <div class="card-body">
+          <%= form_with url: subject_collaborations_path(@subject), method: :post, class: "row g-2" do |f| %>
+            <div class="col-md-6">
+              <%= f.email_field :email, placeholder: "colleague@school.com", class: "form-control form-control-sm" %>
+            </div>
+            <div class="col-md-4">
+              <%= f.select :role, [["Read Only", "viewer"], ["Can Edit", "editor"]], {}, class: "form-select form-select-sm" %>
+            </div>
+            <div class="col-md-2">
+              <%= f.submit "Share", class: "btn btn-sm btn-primary w-100" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
     <%# --- GENERATOR CARD --- %>
-    <div class="col-md-6">
+    <div class="col-md-4">
       <div class="card border-primary rounded-0 shadow-sm h-100">
         <div class="card-header rounded-0 bg-dark text-primary">
           <h5 class="mb-0" style="font-family: 'Questrial';">Lesson Generator</h5>

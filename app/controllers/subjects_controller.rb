@@ -1,9 +1,14 @@
 class SubjectsController < ApplicationController
-  before_action :set_subject, only: %i[ show edit update destroy ]
+  before_action :set_subject, only: [:show, :edit, :update, :destroy, :generate_lessons]
+  before_action :authorize_viewer!, only: [:show]
+  before_action :authorize_editor!, only: [:edit, :update, :destroy, :generate_lessons]
 
   # GET /subjects or /subjects.json
   def index
-    @subjects = current_user.subjects
+    #@subjects = current_user.subjects
+    @subjects = Subject.left_outer_joins(:collaborations)
+      .where("subjects.user_id = ? OR collaborations.user_id = ?", current_user.id, current_user.id)
+      .distinct
   end
 
   # GET /subjects/1 or /subjects/1.json
@@ -72,11 +77,31 @@ class SubjectsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_subject
-      @subject = current_user.subjects.find(params.expect(:id))
+      #@subject = current_user.subjects.find(params.expect(:id))
+      @subject = Subject.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def subject_params
       params.expect(subject: [ :name, :group, :room, :schedule_data ])
+    end
+    def authorize_viewer!
+      # Allow if owner OR if any collaboration exists for this user
+      is_owner = @subject.user == current_user
+      is_collaborator = @subject.collaborations.exists?(user: current_user)
+
+      unless is_owner || is_collaborator
+        redirect_to subjects_path, alert: "You don't have permission to view this."
+      end
+    end
+
+    def authorize_editor!
+      # Allow if owner OR if collaboration role is specifically 'editor'
+      is_owner = @subject.user == current_user
+      is_editor = @subject.collaborations.exists?(user: current_user, role: 'editor')
+
+      unless is_owner || is_editor
+        redirect_to subjects_path, alert: "You don't have write access to this subject."
+      end
     end
 end

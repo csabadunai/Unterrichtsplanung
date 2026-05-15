@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     member do
       post :generate_lessons
     end
+    resources :collaborations, only: [:create, :destroy]
   end
   resources :lessons do
     resources :phases do

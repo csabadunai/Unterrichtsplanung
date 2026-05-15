@@ -1,5 +1,11 @@
 class Subject < ApplicationRecord
   belongs_to :user
+  has_many :collaborations, dependent: :destroy
+  has_many :shared_users, through: :collaborations, source: :user
+  # Roles:
+  # owner: full control (already handled by belongs_to :user)
+  # editor: can read and write
+  # viewer: can only read
   has_many :lessons, dependent: :destroy
   validate :validate_schedule_data_format
   before_save :normalize_schedule_data
