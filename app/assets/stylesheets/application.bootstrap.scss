@@ -31,7 +31,7 @@ $input-focus-box-shadow:   0 0 0 $input-focus-width rgba($csabi-green-bright, 0.
 body {
   font-family: $font-family-sans-serif;
   -webkit-font-smoothing: antialiased;
-  letter-spacing: 0.01em; // Questrial's signature look
+  letter-spacing: 0.01em;
 }
 
 .container {
@@ -47,14 +47,24 @@ body {
 .row.g-0.border-top.border-bottom:first-of-type > div {
   background-color: $csabi-bg1;
   color: $secondary;
-  font-weight: 400; // Questrial is a single weight, but looks great here
+  font-weight: 400;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   padding: 0.6rem 0.5rem;
 }
+.row.g-0.border-top.border-bottom.py-2.align-items-stretch {
+  display: flex !important;
+  flex-wrap: nowrap !important; /* Prevents columns from snapping to new lines */
+  
+  .col-6, .col-3 {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    height: auto !important; /* Lets Bootstrap's stretch handle the height calculation */
+  }
+}
 
 /* --- 4. Quill & Form Fields --- */
-
 .ql-toolbar.ql-snow {
   display: none !important;
   position: fixed;
@@ -72,17 +82,48 @@ body {
   display: block !important;
 }
 
-/* Editor Styles - Force Questrial inside the editor */
 .ql-container.ql-snow, .ql-snow .ql-container { border: none !important; }
 
 .ql-editor {
   text-transform: none !important; 
   font-family: $font-family-sans-serif !important;
-  font-size: 1.05rem !important; // Questrial reads slightly smaller, so we bump it up
+  font-size: 1.05rem !important;
   line-height: 1.6;
   scroll-margin-top: 65px;
   min-height: 100px;
   color: $csabi-fg;
+}
+
+/* Layout Protection: Bounds container heights to stop row jumping */
+.quill-editor-instance {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important; /* Forces it to fill the exact size of the parent column */
+  min-height: 120px !important; /* Sets your clean baseline row height */
+  height: 0 !important; /* CRITICAL: Forces browser to compute height from flex parent, not child text */
+  position: relative !important;
+
+  .ql-container.ql-snow {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 1 auto !important;
+    height: 100% !important;
+    min-height: 0 !important; /* Prevents content from pushing parent dimensions out */
+    border: none !important;
+  }
+
+  .ql-editor {
+    flex: 1 1 auto !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow-y: auto !important; /* Locks all long texts into an elegant internal scrollbar */
+    padding: 0.5rem !important;
+    text-transform: none !important;
+    font-family: $font-family-sans-serif !important;
+    font-size: 1.05rem !important;
+    line-height: 1.6 !important;
+    color: $csabi-fg !important;
+  }
 }
 
 /* Focus States & Glows */
@@ -100,21 +141,19 @@ body {
   padding: 0.5rem;
   text-transform: none !important;
   font-family: $font-family-sans-serif;
+  resize: none; /* Prevents user dragging from breaking layout heights */
 }
 
 /* --- 5. Rich Text Output (Lists) --- */
 .rich-text-output {
-  li[data-list="bullet"] {
-    list-style-type: disc;
+  li[data-list="bullet"], li[data-list="ordered"] {
     position: relative;
     padding-left: 0.5rem;
     margin-bottom: 0.35rem;
   }
 
-  li[data-list="ordered"] {
-    position: relative;
-    padding-left: 0.5rem;
-    margin-bottom: 0.35rem;
+  li[data-list="bullet"] {
+    list-style-type: disc;
   }
 
   ol {
@@ -126,7 +165,7 @@ body {
   }
 }
 
-/* --- 6. Controls --- */
+/* --- 6. Controls & Components --- */
 .social-picker {
   border: none;
   color: $csabi-green-bright;
@@ -139,8 +178,9 @@ body {
   border: none;
   &:hover { background-color: $csabi-green-bright; }
 }
+
 .col-2.border-start.border-end {
-  white-space: pre-line; /* This respects the line breaks from the database */
+  white-space: pre-line;
   font-size: 0.9rem;
   line-height: 1.4;
   color: $secondary;
@@ -149,15 +189,14 @@ body {
 .shadow-hover {
   transition: all 0.2s ease-in-out;
   cursor: pointer;
+  &:hover { border: 1px solid #dee2e6 !important; }
 }
 
-.shadow-hover:hover {
-  border: 1px solid #dee2e6 !important;
-}
 .breadcrumb-item + .breadcrumb-item::before {
   color: rgba(255, 255, 255, 0.6) !important;
   content: var(--bs-breadcrumb-divider, "→") !important;
 }
+
 .user-avatar-circle {
   width: 32px;
   height: 32px;
@@ -172,12 +211,12 @@ body {
   border: 2px solid rgba(255,255,255,0.1);
 }
 
-/* Optional: hover effect for the dropdown */
 .nav-link:hover .user-avatar-circle {
   transform: scale(1.05);
   transition: transform 0.2s ease;
 }
 
+/* --- 7. Timetable Dashboard --- */
 .timetable-container {
   min-width: 800px;
   overflow-x: auto;
@@ -185,17 +224,16 @@ body {
 
 .day-column {
   background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
-  background-size: 100% 30px; /* Grid lines every 30 mins */
+  background-size: 100% 30px;
 }
 
 .timetable-entry {
   z-index: 10;
   transition: transform 0.1s ease, z-index 0.1s ease;
-}
-
-.timetable-entry:hover {
-  z-index: 100;
-  transform: scale(1.02);
+  &:hover {
+    z-index: 100;
+    transform: scale(1.02);
+  }
 }
 
 .entry-content {

@@ -1,6 +1,7 @@
 class PhasesController < ApplicationController
-  before_action :set_lesson
-  before_action :set_phase, only: %i[ show edit update destroy move_lower move_higher ]
+  before_action :set_lesson, only: [:new, :create, :bulk_update]
+  before_action :set_phase, only: [:show, :edit, :update, :destroy, :move_lower, :move_higher]
+  before_action :authorize_subject_editor!, except: [:index, :show] # Protect everything else
 
   def index
     # We already have @lesson from before_action. 
@@ -89,5 +90,30 @@ class PhasesController < ApplicationController
 
   def phase_params
     params.expect(phase: [ :duration, :social, :title, :description, :differentiation, :materials, :position ])
+  end
+
+  def authorize_subject_editor!
+    # 1. Try to find the subject through @lesson or @phase if they exist
+    # 2. If they don't (like in bulk_update), find it via params[:lesson_id]
+    subject = if @lesson
+                @lesson.subject
+              elsif @phase
+                @phase.lesson.subject
+              elsif params[:lesson_id]
+                Lesson.find(params[:lesson_id]).subject
+              end
+
+    # Check if we actually found a subject to prevent another nil error
+    if subject.nil?
+      redirect_to subjects_path, alert: "Could not find the associated subject."
+      return
+    end
+
+    is_owner = subject.user == current_user
+    is_editor = subject.collaborations.exists?(user: current_user, role: 'editor')
+
+    unless is_owner || is_editor
+      redirect_to subject_path(subject), alert: "You do not have permission to modify these phases."
+    end
   end
 end

@@ -20,8 +20,14 @@
 
   <% else %>
     <div class="col-12">
-      <%= link_to lesson_path(@lesson, editing: true), class: "btn btn-warning w-100 rounded-0 shadow-sm" do %>
-        <i class="bi bi-pencil-square me-2"></i> Edit All Phases
+      <% if @lesson.subject.user == current_user || @lesson.subject.collaborations.exists?(user: current_user, role: 'editor') %>
+        <%= link_to lesson_path(@lesson, editing: true), class: "btn btn-warning w-100 rounded-0 shadow-sm" do %>
+          <i class="bi bi-pencil-square me-2"></i> Edit All Phases
+        <% end %>
+      <% else %>
+        <div class="btn btn-light w-100 rounded-0 shadow-sm disabled text-muted">
+          <i class="bi bi-lock-fill me-2"></i> Read Only
+        </div>
       <% end %>
     </div>
   <% end %>
@@ -29,7 +35,7 @@
 </div>
 
 <div class="row g-0 border-top border-bottom bg-light fw-bold align-items-stretch text-secondary" style="font-size: 0.85rem;">
-  
+
   <div class="col-1 border-start border-end p-2 d-flex align-items-start">
     <span>Dauer &<br>Sozialform</span>
   </div>
